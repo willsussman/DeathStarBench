@@ -6,6 +6,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 # import pandas as pd
 import numpy as np
+import statistics
 
 services = [
     'user_mongodb',
@@ -26,27 +27,47 @@ services = [
 def main():
 
     f = open('timing.txt', 'r')
-    contents = f.read().split('\n')
+    lines = f.read().split('\n')
     f.close()
-    # print(contents)
-    start = datetime.strptime(contents[0].split(']')[0], '[%a %b %d %H:%M:%S %Z %Y').timestamp()
-    # start = pd.to_datetime(contents[0].split(']')[0], format='[%a %b %d %H:%M:%S %Z %Y')
-    print(start)
-    # print(start.timestamp())
-    injection = datetime.strptime(contents[1].split(']')[0], '[%a %b %d %H:%M:%S %Z %Y').timestamp()
-    # injection = pd.to_datetime(contents[1].split(']')[0], format='[%a %b %d %H:%M:%S %Z %Y')
-    print(injection)
-    stop = datetime.strptime(contents[2].split(']')[0], '[%a %b %d %H:%M:%S %Z %Y').timestamp()
-    # stop = pd.to_datetime(contents[2].split(']')[0], format='[%a %b %d %H:%M:%S %Z %Y')
-    print(stop)
-    # exit(0)
+
+    start = datetime.strptime(lines[0].split(']')[0], '[%a %b %d %H:%M:%S %Z %Y').timestamp()
+    injection = datetime.strptime(lines[1].split(']')[0], '[%a %b %d %H:%M:%S %Z %Y').timestamp()
+    stop = datetime.strptime(lines[2].split(']')[0], '[%a %b %d %H:%M:%S %Z %Y').timestamp()
+
+    # f = open('wrk.txt', 'r')
+    # duration = float(f.read().split(' requests in ')[1].split('s, ')[0])
+    # f.close()
 
     f = open('0.txt', 'r')
-    contents = f.read().split('\n')
+    latencies = [int(y) for y in f.read().split('\n')[:-1]]
     f.close()
-    latencies_Y = [int(y) for y in contents[:-1]]
-    latencies_X = np.linspace(0, stop - start, len(latencies_Y))
-    print(latencies_X)
+    latencies_X = np.linspace(0, stop - start, len(latencies))
+
+    plt.figure()
+    plt.xlabel('Time')
+    plt.ylabel('Latency')
+    plt.plot(latencies_X, latencies, label='raw')
+
+    alpha = 0.1
+    latencies_ewma = ewma(latencies, alpha)
+    stdev = statistics.stdev(latencies_ewma)
+    # mean = statistics.mean(latencies_ewma)
+    plt.plot(latencies_X, latencies_ewma, label=f'ewma({alpha})')
+    buttons_X = []
+    for i in range(1, len(latencies)):
+        # if latencies_ewma[i] > mean + 3*stdev:
+        if latencies_ewma[i] - latencies_ewma[i-1] > stdev:
+            plt.axvline(latencies_X[i], linestyle='solid', color='red')
+            buttons_X.append(latencies_X[i])
+
+    plt.legend()
+    print(f'Saving latency.pdf...')
+    plt.savefig('latency.pdf')
+    # exit(0)
+    # latencies_X = np.linspace(0.0, duration, len(latencies_Y))
+    # latencies_Y = [int(y) for y in contents[:-1]]
+    # latencies_X = np.linspace(0, stop - start, len(latencies_Y))
+    # print(latencies_X)
     # plt.figure()
     # plt.plot(latencies_X, latencies_Y)
     # plt.savefig('debug.pdf')
@@ -136,19 +157,21 @@ def main():
     # exit(0)
     for job in bits.keys():
         # plt.figure()
-        fig, ax = plt.subplots()
-        twinax = ax.twinx()
-        ax.set_xlabel('Time')
-        ax.set_ylabel('Bits')
-        twinax.set_ylabel('Latency')
+        # fig, ax = plt.subplots()
+        plt.figure()
+        # twinax = ax.twinx()
+        plt.xlabel('Time')
+        plt.ylabel('Bits')
+        # twinax.set_ylabel('Latency')
         # print(f'xlim={start - .05*(stop - start)},{stop + .05*(stop - start)}')
         # plt.xlim(start - .05*(stop - start), stop + .05*(stop - start))
-        plt.xlim(- .05*(stop - start), stop-start + .05*(stop - start))
+        # plt.xlim(- .05*(stop - start), (stop - start) + .05*(stop - start))
+        plt.xlim(0, stop - start)
         # print(f'xlim={start},{stop}')
         # plt.xlim(min(latencies_X), max(latencies_X))
-        ax.set_ylim(-.05, 1.05)
-        twinax.plot(latencies_X, latencies_Y)
-        ax.axvline(injection - start, linestyle='dashed', color='black')
+        plt.ylim(-.05, 1.05)
+        # twinax.plot(latencies_X, latencies_Y)
+        plt.axvline(injection - start, linestyle='dashed', color='black')
         for alertname in bits[job]:
             print(alertname)
             X = [t-start for (t, _) in bits[job][alertname]]
@@ -166,23 +189,30 @@ def main():
             Y = Y2
             # print(f'X2={X2}')
 
-            # X = X+[stop]
-            # Y = Y+[Y[-1]]
+            X = X+[stop-start]
+            Y = Y+[Y[-1]]
             # print(f'final X={X}')
             # exit(0)
+
+            # X = X+[32]
+            # Y = Y+[Y[-1]]
 
             for i in range(len(X)):
                 print(f'({X[i]},{Y[i]})')
             # plt.scatter(X, Y, label=alertname)
             # plt.plot(X, Y, linestyle='-', marker='o', label=alertname)
-            ax.step(X, Y, where='post', linestyle='-', marker='o', label=alertname)
+            plt.step(X, Y, where='post', linestyle='-', marker='', label=alertname)
             # plt.scatter()
             # step2(X, Y, label=alertname)
             # plt.step([min_timestamp]+list(X)+[max_timestamp], [Y[0]]+list(Y)+[Y[-1]], where='post', linestyle='-', marker='', label=alertname)
             # plt.step(X+[max_timestamp], Y+[Y[-1]], where='post', linestyle='-', marker='o', label=alertname)
         plt.title(f'{job}')
-        ax.legend()
-        print(f'Saving to bitplots/{job}.pdf...')
+        
+
+        for x in buttons_X:
+            plt.axvline(x, linestyle='solid', color='red')
+        plt.legend()
+        print(f'Saving bitplots/{job}.pdf...')
         plt.savefig(f'bitplots/{job}.pdf')
         plt.close()
         print()
@@ -218,6 +248,11 @@ def main():
 # def combine(dict):
     # dict[alertname] = [(timestamp, bit)]
 
+def ewma(vec, alpha):
+    out = [vec[0]]
+    for i in range(1, len(vec)):
+        out.append(alpha*vec[i] + (1-alpha)*out[i-1])
+    return out
 
 def interpolate(x, data):
     data_x, data_y = [t for (t, _) in data], [b for (_, b) in data]

@@ -1,19 +1,19 @@
-# mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # minimum: 6M
-mems=( "512M" )
+mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # minimum: 6M
+# mems=( "512M" )
 candidates=(
     "user-mongodb"
-    # "url-shorten-memcached"
-    # "user-timeline-mongodb"
-    # "media-mongodb"
-    # "post-storage-memcached"
-    # "home-timeline-redis"
-    # "user-memcached"
-    # "social-graph-mongodb"
-    # "social-graph-redis"
-    # "url-shorten-mongodb"
-    # "post-storage-mongodb"
-    # "user-timeline-redis"
-    # "media-memcached"
+    "url-shorten-memcached"
+    "user-timeline-mongodb"
+    "media-mongodb"
+    "post-storage-memcached"
+    "home-timeline-redis"
+    "user-memcached"
+    "social-graph-mongodb"
+    "social-graph-redis"
+    "url-shorten-mongodb"
+    "post-storage-mongodb"
+    "user-timeline-redis"
+    "media-memcached"
 )
 
 dirname=/home/ubuntu/DeathStarBench/socialNetwork/experiments/"$(date)"
@@ -32,7 +32,7 @@ urls=http://localhost:8080/wrk2-api/post/compose
 # urls=http://localhost:8080/wrk2-api/home-timeline/read
 # urls=http://localhost:8080/wrk2-api/user-timeline/read
 # urls="http://localhost:8080/wrk2-api/post/compose http://localhost:8080/wrk2-api/home-timeline/read http://localhost:8080/wrk2-api/user-timeline/read"
-rate=100
+rate=1000
 echo "/home/ubuntu/DeathStarBench/wrk2/wrk -D exp -t $threads -c $conns -d $duration -L -s $script $urls -R $rate -P" > load.txt
 
 echo "Setting defaults..."

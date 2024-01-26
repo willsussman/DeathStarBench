@@ -30,7 +30,7 @@ for conns in {1..1001..50}; do
         mkdir "rate=$rate"
         cd "rate=$rate"
 
-        echo conns=$conns rate=$rate
+        echo "[$(date)] conns=$conns rate=$rate"
         /home/ubuntu/DeathStarBench/wrk2/wrk -D exp \
             -t $threads \
             -c $conns \
