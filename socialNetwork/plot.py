@@ -47,8 +47,8 @@ def main():
     
     for rate in range(rate_min, rate_max, rate_step):
         plt.figure()
-        plt.xlabel('Time')
-        plt.ylabel('Latency')
+        plt.xlabel('Time (s)')
+        plt.ylabel('Latency (\u03bcs)')
         plt.title(f'-R {rate}')
         for conns in range(conns_min, conns_max, conns_step):
             latencies = data[conns][rate]
