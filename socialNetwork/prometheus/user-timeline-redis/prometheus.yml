@@ -1,0 +1,21 @@
+global:
+  # scrape_interval: 15s
+  # evaluation_interval: 15s # Evaluate rules every 15 seconds.
+  # scrape_interval: 2m
+  # evaluation_interval: 2m
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+scrape_configs:
+
+  - job_name: 'user-timeline-redis-exporter'
+    static_configs:
+      - targets: ['user-timeline-redis-exporter:9121']
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['user-timeline-redis-alertmanager:9093']
+
+rule_files:
+  - "alert.rules.yml"

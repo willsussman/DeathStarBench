@@ -1,8 +1,11 @@
 version: "3.9"
 services:
+
   social-graph-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: social-graph-service
+    container_name: social-graph-service
     #    ports:
     #      - 10000:9090
     depends_on:
@@ -14,31 +17,18 @@ services:
     entrypoint: SocialGraphService
     volumes:
       - ./config:/social-network-microservices/config
-
-  social-graph-mongodb:
-    image: mongo:4.4.6
-    hostname: social-graph-mongodb
-    # ports:
-    #   - 27018:27017
-    restart: always
-
-  social-graph-redis:
-    image: redis
-    hostname: social-graph-redis
-    # ports:
-    #   - 6380:6379
-    restart: always
-
-  home-timeline-redis:
-    image: redis
-    hostname: home-timeline-redis
-    # ports:
-    #   - 6381:6379
-    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   compose-post-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: compose-post-service
+    container_name: compose-post-service
     #    ports:
     #      - 10001:9090
     restart: always
@@ -48,10 +38,18 @@ services:
     entrypoint: ComposePostService
     volumes:
       - ./config:/social-network-microservices/config
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   post-storage-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: post-storage-service
+    container_name: post-storage-service
     ports:
       - 10002:9090
     restart: always
@@ -63,24 +61,18 @@ services:
     entrypoint: PostStorageService
     volumes:
       - ./config:/social-network-microservices/config
-
-  post-storage-memcached:
-    image: memcached
-    hostname: post-storage-memcached
-    #    ports:
-    #      - 11212:11211
-    restart: always
-
-  post-storage-mongodb:
-    image: mongo:4.4.6
-    hostname: post-storage-mongodb
-    #    ports:
-    #      - 27019:27017
-    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   user-timeline-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: user-timeline-service
+    container_name: user-timeline-service
     #    ports:
     #      - 10003:9090
     restart: always
@@ -92,24 +84,18 @@ services:
     entrypoint: UserTimelineService
     volumes:
       - ./config:/social-network-microservices/config
-
-  user-timeline-redis:
-    image: redis
-    hostname: user-timeline-redis
-    #    ports:
-    #      - 6383:6379
-    restart: always
-
-  user-timeline-mongodb:
-    image: mongo:4.4.6
-    hostname: user-timeline-mongodb
-    #    ports:
-    #      - 27020:27017
-    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   url-shorten-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: url-shorten-service
+    container_name: url-shorten-service
     #    ports:
     #      - 10004:9090
     restart: always
@@ -121,24 +107,18 @@ services:
         condition: service_started
     volumes:
       - ./config:/social-network-microservices/config
-
-  url-shorten-memcached:
-    image: memcached
-    hostname: url-shorten-memcached
-    #    ports:
-    #      - 11213:11211
-    restart: always
-
-  url-shorten-mongodb:
-    image: mongo:4.4.6
-    hostname: url-shorten-mongodb
-    #    ports:
-    #      - 27021:27017
-    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   user-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: user-service
+    container_name: user-service
     #    ports:
     #      - 10005:9090
     restart: always
@@ -150,24 +130,18 @@ services:
     entrypoint: UserService
     volumes:
       - ./config:/social-network-microservices/config
-
-  user-memcached:
-    image: memcached
-    hostname: user-memcached
-    #    ports:
-    #      - 11214:11211
-    restart: always
-
-  user-mongodb:
-    image: mongo:4.4.6
-    hostname: user-mongodb
-    # ports:
-    #   - 27023:27017
-    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   media-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: media-service
+    container_name: media-service
     #    ports:
     #      - 10006:9090
     depends_on:
@@ -179,24 +153,18 @@ services:
     entrypoint: MediaService
     volumes:
       - ./config:/social-network-microservices/config
-
-  media-memcached:
-    image: memcached
-    hostname: media-memcached
-    #    ports:
-    #      - 11215:11211
-    restart: always
-
-  media-mongodb:
-    image: mongo:4.4.6
-    hostname: media-mongodb
-    #    ports:
-    #      - 27024:27017
-    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   text-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: text-service
+    container_name: text-service
     #    ports:
     #      - 10007:9090
     restart: always
@@ -206,10 +174,18 @@ services:
     entrypoint: TextService
     volumes:
       - ./config:/social-network-microservices/config
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   unique-id-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: unique-id-service
+    container_name: unique-id-service
     #    ports:
     #      - 10008:9090
     restart: always
@@ -219,10 +195,18 @@ services:
     entrypoint: UniqueIdService
     volumes:
       - ./config:/social-network-microservices/config
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   user-mention-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: user-mention-service
+    container_name: user-mention-service
     #    ports:
     #      - 10009:9090
     depends_on:
@@ -232,10 +216,18 @@ services:
     entrypoint: UserMentionService
     volumes:
       - ./config:/social-network-microservices/config
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   home-timeline-service:
     image: deathstarbench/social-network-microservices:latest
+    # init: true
     hostname: home-timeline-service
+    container_name: home-timeline-service
     #    ports:
     #      - 10010:9090
     depends_on:
@@ -245,10 +237,18 @@ services:
     entrypoint: HomeTimelineService
     volumes:
       - ./config:/social-network-microservices/config
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "9090"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   nginx-thrift:
     image: yg397/openresty-thrift:xenial
+    # init: true
     hostname: nginx-thrift
+    container_name: nginx-thrift
     ports:
       - 8080:8080
     depends_on:
@@ -262,10 +262,18 @@ services:
       - ./nginx-web-server/jaeger-config.json:/usr/local/openresty/nginx/jaeger-config.json
       - ./gen-lua:/gen-lua
       - ./docker/openresty-thrift/lua-thrift:/usr/local/openresty/lualib/thrift
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8080"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   media-frontend:
     image: yg397/media-frontend:xenial
+    # init: true
     hostname: media-frontend
+    container_name: media-frontend
     ports:
       - 8081:8080
     restart: always
@@ -275,9 +283,18 @@ services:
     volumes:
       - ./media-frontend/lua-scripts:/usr/local/openresty/nginx/lua-scripts
       - ./media-frontend/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8080"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   jaeger-agent:
     image: jaegertracing/all-in-one:latest
+    # init: true
+    hostname: jaeger-agent
+    container_name: jaeger-agent
     ports:
       #      - 5775:5775/udp
       #      - 6831:6831/udp
@@ -289,3 +306,735 @@ services:
     restart: always
     environment:
       - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "16686"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+
+
+  social-graph-mongodb-alertmanager:
+    image: prom/alertmanager
+    hostname: social-graph-mongodb-alertmanager
+    container_name: social-graph-mongodb-alertmanager
+    volumes:
+      - ./alertmanager/social-graph-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9104:9093"
+
+  social-graph-mongodb-prometheus:
+    image: prom/prometheus
+    hostname: social-graph-mongodb-prometheus
+    container_name: social-graph-mongodb-prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus/social-graph-mongodb:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  social-graph-mongodb-exporter:
+    # image: bitnami/mongodb-exporter:latest
+    image: percona/mongodb_exporter:0.40.0
+    hostname: social-graph-mongodb-exporter
+    container_name: social-graph-mongodb-exporter
+    # command: ["--log.level=debug"]
+    environment:
+      - LOG_LEVEL=debug
+      - MONGODB_URI=mongodb://social-graph-mongodb:27017
+    ports:
+      - '9217:9216' # host:container
+
+  social-graph-mongodb:
+    image: mongo:4.4.6
+    command: ["mongod", "-vvvvv"]
+    # image: ncmongo
+    # init: true
+    hostname: social-graph-mongodb
+    container_name: social-graph-mongodb
+    # ports:
+    #   - 27018:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "27017"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  post-storage-mongodb-alertmanager:
+    image: prom/alertmanager
+    hostname: post-storage-mongodb-alertmanager
+    container_name: post-storage-mongodb-alertmanager
+    volumes:
+      - ./alertmanager/post-storage-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9105:9093"
+
+  post-storage-mongodb-prometheus:
+    image: prom/prometheus
+    hostname: post-storage-mongodb-prometheus
+    container_name: post-storage-mongodb-prometheus
+    ports:
+      - "9092:9090"
+    volumes:
+      - ./prometheus/post-storage-mongodb:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  post-storage-mongodb-exporter:
+    # image: bitnami/mongodb-exporter:latest
+    image: percona/mongodb_exporter:0.40.0
+    hostname: post-storage-mongodb-exporter
+    container_name: post-storage-mongodb-exporter
+    # command: ["--log.level=debug"]
+    environment:
+      - LOG_LEVEL=debug
+      - MONGODB_URI=mongodb://post-storage-mongodb:27017
+    ports:
+      - '9218:9216' # host:container
+
+  post-storage-mongodb:
+    image: mongo:4.4.6
+    command: ["mongod", "-vvvvv"]
+    # image: ncmongo
+    # init: true
+    hostname: post-storage-mongodb
+    container_name: post-storage-mongodb
+    #    ports:
+    #      - 27019:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "27017"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  user-timeline-mongodb-alertmanager:
+    image: prom/alertmanager
+    hostname: user-timeline-mongodb-alertmanager
+    container_name: user-timeline-mongodb-alertmanager
+    volumes:
+      - ./alertmanager/user-timeline-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9107:9093"
+
+  user-timeline-mongodb-prometheus:
+    image: prom/prometheus
+    hostname: user-timeline-mongodb-prometheus
+    container_name: user-timeline-mongodb-prometheus
+    ports:
+      - "9093:9090"
+    volumes:
+      - ./prometheus/user-timeline-mongodb:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  user-timeline-mongodb-exporter:
+    # image: bitnami/mongodb-exporter:latest
+    image: percona/mongodb_exporter:0.40.0
+    hostname: user-timeline-mongodb-exporter
+    container_name: user-timeline-mongodb-exporter
+    # command: ["--log.level=debug"]
+    environment:
+      - LOG_LEVEL=debug
+      - MONGODB_URI=mongodb://user-timeline-mongodb:27017
+    ports:
+      - '9219:9216' # host:container
+
+  user-timeline-mongodb:
+    image: mongo:4.4.6
+    command: ["mongod", "-vvvvv"]
+    # image: ncmongo
+    # init: true
+    hostname: user-timeline-mongodb
+    container_name: user-timeline-mongodb
+    #    ports:
+    #      - 27020:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "27017"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  url-shorten-mongodb-alertmanager:
+    image: prom/alertmanager
+    hostname: url-shorten-mongodb-alertmanager
+    container_name: url-shorten-mongodb-alertmanager
+    volumes:
+      - ./alertmanager/url-shorten-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9106:9093"
+
+  url-shorten-mongodb-prometheus:
+    image: prom/prometheus
+    hostname: url-shorten-mongodb-prometheus
+    container_name: url-shorten-mongodb-prometheus
+    ports:
+      - "9094:9090"
+    volumes:
+      - ./prometheus/url-shorten-mongodb:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  url-shorten-mongodb-exporter:
+    # image: bitnami/mongodb-exporter:latest
+    image: percona/mongodb_exporter:0.40.0
+    hostname: url-shorten-mongodb-exporter
+    container_name: url-shorten-mongodb-exporter
+    # command: ["--log.level=debug"]
+    environment:
+      - LOG_LEVEL=debug
+      - MONGODB_URI=mongodb://url-shorten-mongodb:27017
+    ports:
+      - '9220:9216' # host:container
+
+  url-shorten-mongodb:
+    image: mongo:4.4.6
+    command: ["mongod", "-vvvvv"]
+    # image: ncmongo
+    # init: true
+    hostname: url-shorten-mongodb
+    container_name: url-shorten-mongodb
+    #    ports:
+    #      - 27021:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "27017"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  user-mongodb-alertmanager:
+    image: prom/alertmanager
+    hostname: user-mongodb-alertmanager
+    container_name: user-mongodb-alertmanager
+    volumes:
+      - ./alertmanager/user-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9108:9093"
+
+  user-mongodb-prometheus:
+    image: prom/prometheus
+    hostname: user-mongodb-prometheus
+    container_name: user-mongodb-prometheus
+    ports:
+      - "9095:9090"
+    volumes:
+      - ./prometheus/user-mongodb:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  user-mongodb-exporter:
+    # image: bitnami/mongodb-exporter:latest
+    image: percona/mongodb_exporter:0.40.0
+    hostname: user-mongodb-exporter
+    container_name: user-mongodb-exporter
+    # command: ["--log.level=debug"]
+    environment:
+      - LOG_LEVEL=debug
+      - MONGODB_URI=mongodb://user-mongodb:27017
+    ports:
+      - '9221:9216' # host:container
+
+  user-mongodb:
+    image: mongo:4.4.6
+    command: ["mongod", "-vvvvv"]
+    # image: ncmongo
+    # init: true
+    hostname: user-mongodb
+    container_name: user-mongodb
+    # ports:
+    #   - 27023:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "27017"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  media-mongodb-alertmanager:
+    image: prom/alertmanager
+    hostname: media-mongodb-alertmanager
+    container_name: media-mongodb-alertmanager
+    volumes:
+      - ./alertmanager/media-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9109:9093"
+
+  media-mongodb-prometheus:
+    image: prom/prometheus
+    hostname: media-mongodb-prometheus
+    container_name: media-mongodb-prometheus
+    ports:
+      - "9096:9090"
+    volumes:
+      - ./prometheus/media-mongodb:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  media-mongodb-exporter:
+    # image: bitnami/mongodb-exporter:latest
+    image: percona/mongodb_exporter:0.40.0
+    hostname: media-mongodb-exporter
+    container_name: media-mongodb-exporter
+    # command: ["--log.level=debug"]
+    environment:
+      - LOG_LEVEL=debug
+      - MONGODB_URI=mongodb://media-mongodb:27017
+    ports:
+      - '9222:9216' # host:container
+
+  media-mongodb:
+    image: mongo:4.4.6
+    command: ["mongod", "-vvvvv"]
+    # image: ncmongo
+    # init: true
+    hostname: media-mongodb
+    container_name: media-mongodb
+    #    ports:
+    #      - 27024:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "27017"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+
+  social-graph-redis-alertmanager:
+    image: prom/alertmanager
+    hostname: social-graph-redis-alertmanager
+    container_name: social-graph-redis-alertmanager
+    volumes:
+      - ./alertmanager/social-graph-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9110:9093"
+
+  social-graph-redis-prometheus:
+    image: prom/prometheus
+    hostname: social-graph-redis-prometheus
+    container_name: social-graph-redis-prometheus
+    ports:
+      - "9097:9090"
+    volumes:
+      - ./prometheus/social-graph-redis:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  social-graph-redis-exporter:
+    image: oliver006/redis_exporter
+    hostname: social-graph-redis-exporter
+    container_name: social-graph-redis-exporter
+    command:
+      - '--redis.addr=social-graph-redis:6379'
+      # - '--redis.addr=home-timeline-redis:6379'
+      # - '--redis.addr=user-timeline-redis:6379'
+    ports:
+      - '9122:9121' # host:container
+
+  social-graph-redis:
+    image: redis
+    # image: ncredis
+    # init: true
+    hostname: social-graph-redis
+    container_name: social-graph-redis
+    # ports:
+    #   - 6380:6379
+    restart: always
+    environment:
+      - REDIS_PROMETHEUS_EXPORTER=yes
+      - REDIS_EXPORTER_INCL_SYSTEM_METRICS=true
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "6379"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  home-timeline-redis-alertmanager:
+    image: prom/alertmanager
+    hostname: home-timeline-redis-alertmanager
+    container_name: home-timeline-redis-alertmanager
+    volumes:
+      - ./alertmanager/home-timeline-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9111:9093"
+
+  home-timeline-redis-prometheus:
+    image: prom/prometheus
+    hostname: home-timeline-redis-prometheus
+    container_name: home-timeline-redis-prometheus
+    ports:
+      - "9098:9090"
+    volumes:
+      - ./prometheus/home-timeline-redis:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  home-timeline-redis-exporter:
+    image: oliver006/redis_exporter
+    hostname: home-timeline-redis-exporter
+    container_name: home-timeline-redis-exporter
+    command:
+      # - '--redis.addr=social-graph-redis:6379'
+      - '--redis.addr=home-timeline-redis:6379'
+      # - '--redis.addr=user-timeline-redis:6379'
+    ports:
+      - '9123:9121' # host:container
+
+  home-timeline-redis:
+    image: redis
+    # image: ncredis
+    # init: true
+    hostname: home-timeline-redis
+    container_name: home-timeline-redis
+    # ports:
+    #   - 6381:6379
+    restart: always
+    environment:
+      - REDIS_PROMETHEUS_EXPORTER=yes
+      - REDIS_EXPORTER_INCL_SYSTEM_METRICS=true
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "6379"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  user-timeline-redis-alertmanager:
+    image: prom/alertmanager
+    hostname: user-timeline-redis-alertmanager
+    container_name: user-timeline-redis-alertmanager
+    volumes:
+      - ./alertmanager/user-timeline-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9112:9093"
+
+  user-timeline-redis-prometheus:
+    image: prom/prometheus
+    hostname: user-timeline-redis-prometheus
+    container_name: user-timeline-redis-prometheus
+    ports:
+      - "9099:9090"
+    volumes:
+      - ./prometheus/user-timeline-redis:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  user-timeline-redis-exporter:
+    image: oliver006/redis_exporter
+    hostname: user-timeline-redis-exporter
+    container_name: user-timeline-redis-exporter
+    command:
+      # - '--redis.addr=social-graph-redis:6379'
+      # - '--redis.addr=home-timeline-redis:6379'
+      - '--redis.addr=user-timeline-redis:6379'
+    ports:
+      - '9124:9121' # host:container
+
+  user-timeline-redis:
+    image: redis
+    # image: ncredis
+    # init: true
+    hostname: user-timeline-redis
+    container_name: user-timeline-redis
+    #    ports:
+    #      - 6383:6379
+    restart: always
+    environment:
+      - REDIS_PROMETHEUS_EXPORTER=yes
+      - REDIS_EXPORTER_INCL_SYSTEM_METRICS=true
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "6379"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+
+  post-storage-memcached-alertmanager:
+    image: prom/alertmanager
+    hostname: post-storage-memcached-alertmanager
+    container_name: post-storage-memcached-alertmanager
+    volumes:
+      - ./alertmanager/post-storage-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9113:9093"
+
+  post-storage-memcached-prometheus:
+    image: prom/prometheus
+    hostname: post-storage-memcached-prometheus
+    container_name: post-storage-memcached-prometheus
+    ports:
+      - "9100:9090"
+    volumes:
+      - ./prometheus/post-storage-memcached:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  post-storage-memcached-exporter:
+    image: prom/memcached-exporter
+    command:
+      - '--memcached.address=post-storage-memcached:11211'
+    #   - '--memcached.address=url-shorten-memcached:11211'
+    #   - '--memcached.address=user-memcached:11211'
+    #   - '--memcached.address=media-memcached:11211'
+    hostname: post-storage-memcached-exporter
+    container_name: post-storage-memcached-exporter
+    ports:
+      - '9151:9150'
+    # volumes:
+    #   - ./memcached_exporter.yml:/etc/memcached_exporter/memcached_exporter.yml
+    # command:
+    #   - "--config.file=/etc/memcached_exporter/memcached_exporter.yml"
+    # environment:
+    #   - memcached_servers=post-storage-memcached:11211,url-shorten-memcached:11211,user-memcached:11211,media-memcached:11211
+
+  post-storage-memcached:
+    image: memcached
+    # image: ncmemcached
+    # init: true
+    hostname: post-storage-memcached
+    container_name: post-storage-memcached
+    command: ["memcached", "-vv"]
+    #    ports:
+    #      - 11212:11211
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "11211"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  url-shorten-memcached-alertmanager:
+    image: prom/alertmanager
+    hostname: url-shorten-memcached-alertmanager
+    container_name: url-shorten-memcached-alertmanager
+    volumes:
+      - ./alertmanager/url-shorten-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9114:9093"
+
+  url-shorten-memcached-prometheus:
+    image: prom/prometheus
+    hostname: url-shorten-memcached-prometheus
+    container_name: url-shorten-memcached-prometheus
+    ports:
+      - "9101:9090"
+    volumes:
+      - ./prometheus/url-shorten-memcached:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  url-shorten-memcached-exporter:
+    image: prom/memcached-exporter
+    command:
+    #   - '--memcached.address=post-storage-memcached:11211'
+      - '--memcached.address=url-shorten-memcached:11211'
+    #   - '--memcached.address=user-memcached:11211'
+    #   - '--memcached.address=media-memcached:11211'
+    hostname: url-shorten-memcached-exporter
+    container_name: url-shorten-memcached-exporter
+    ports:
+      - '9152:9150'
+    # volumes:
+    #   - ./memcached_exporter.yml:/etc/memcached_exporter/memcached_exporter.yml
+    # command:
+    #   - "--config.file=/etc/memcached_exporter/memcached_exporter.yml"
+    # environment:
+    #   - memcached_servers=post-storage-memcached:11211,url-shorten-memcached:11211,user-memcached:11211,media-memcached:11211
+
+  url-shorten-memcached:
+    image: memcached
+    # image: ncmemcached
+    # init: true
+    hostname: url-shorten-memcached
+    container_name: url-shorten-memcached
+    command: ["memcached", "-vv"]
+    #    ports:
+    #      - 11213:11211
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "11211"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  user-memcached-alertmanager:
+    image: prom/alertmanager
+    hostname: user-memcached-alertmanager
+    container_name: user-memcached-alertmanager
+    volumes:
+      - ./alertmanager/user-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9115:9093"
+
+  user-memcached-prometheus:
+    image: prom/prometheus
+    hostname: user-memcached-prometheus
+    container_name: user-memcached-prometheus
+    ports:
+      - "9102:9090"
+    volumes:
+      - ./prometheus/user-memcached:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  user-memcached-exporter:
+    image: prom/memcached-exporter
+    command:
+    #   - '--memcached.address=post-storage-memcached:11211'
+    #   - '--memcached.address=url-shorten-memcached:11211'
+      - '--memcached.address=user-memcached:11211'
+    #   - '--memcached.address=media-memcached:11211'
+    hostname: user-memcached-exporter
+    container_name: user-memcached-exporter
+    ports:
+      - '9153:9150'
+    # volumes:
+    #   - ./memcached_exporter.yml:/etc/memcached_exporter/memcached_exporter.yml
+    # command:
+    #   - "--config.file=/etc/memcached_exporter/memcached_exporter.yml"
+    # environment:
+    #   - memcached_servers=post-storage-memcached:11211,url-shorten-memcached:11211,user-memcached:11211,media-memcached:11211
+
+  user-memcached:
+    image: memcached
+    # image: ncmemcached
+    # init: true
+    hostname: user-memcached
+    container_name: user-memcached
+    command: ["memcached", "-vv"]
+    #    ports:
+    #      - 11214:11211
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "11211"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+  media-memcached-alertmanager:
+    image: prom/alertmanager
+    hostname: media-memcached-alertmanager
+    container_name: media-memcached-alertmanager
+    volumes:
+      - ./alertmanager/media-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9116:9093"
+
+  media-memcached-prometheus:
+    image: prom/prometheus
+    hostname: media-memcached-prometheus
+    container_name: media-memcached-prometheus
+    ports:
+      - "9103:9090"
+    volumes:
+      - ./prometheus/media-memcached:/etc/prometheus
+      # - ./my-alert-rules:/etc/prometheus/rules
+      # - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  media-memcached-exporter:
+    image: prom/memcached-exporter
+    command:
+    #   - '--memcached.address=post-storage-memcached:11211'
+    #   - '--memcached.address=url-shorten-memcached:11211'
+    #   - '--memcached.address=user-memcached:11211'
+      - '--memcached.address=media-memcached:11211'
+    hostname: media-memcached-exporter
+    container_name: media-memcached-exporter
+    ports:
+      - '9154:9150'
+    # volumes:
+    #   - ./memcached_exporter.yml:/etc/memcached_exporter/memcached_exporter.yml
+    # command:
+    #   - "--config.file=/etc/memcached_exporter/memcached_exporter.yml"
+    # environment:
+    #   - memcached_servers=post-storage-memcached:11211,url-shorten-memcached:11211,user-memcached:11211,media-memcached:11211
+
+  media-memcached:
+    image: memcached
+    # image: ncmemcached
+    # init: true
+    hostname: media-memcached
+    container_name: media-memcached
+    command: ["memcached", "-vv"]
+    #    ports:
+    #      - 11215:11211
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "11211"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
+
+
+
+
+  webhook-receiver:
+    image: webhook-receiver
+    hostname: webhook-receiver
+    container_name: webhook-receiver
+    build:
+      context: .
+      dockerfile: Dockerfile-webhook-receiver
+    ports:
+      - "5000:5000"
+
+  # grafana:
+  #   image: grafana/grafana
+  #   hostname: grafana
+  #   container_name: grafana
+  #   # restart: unless-stopped
+  #   environment:
+  #     # increases the log level from info to debug
+  #     # - GF_LOG_LEVEL=debug
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #     - GF_SECURITY_ADMIN_USER=admin
+  #   ports:
+  #     - '3000:3000'
+  #   # volumes:
+  #   #   - 'grafana_storage:/var/lib/grafana'
+  #   volumes:
+  #     - ./grafana:/var/lib/grafana
+  #   depends_on:
+  #     - prometheus

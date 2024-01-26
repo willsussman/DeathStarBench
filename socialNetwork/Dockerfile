@@ -27,6 +27,10 @@ COPY --from=builder /usr/local/lib/* /usr/local/lib/
 # Install system dependencies
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        curl \
+        netcat \
+        # dbus \
+        # supervisor \
         openssl \
         ca-certificates \
         libsasl2-2 \
