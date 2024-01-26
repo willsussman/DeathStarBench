@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-dir = '/home/ubuntu/DeathStarBench/socialNetwork/sweeps2'
+dir = '/home/ubuntu/DeathStarBench/socialNetwork/sweeps'
 
 conns_step = 50
 conns_min = 1
-conns_max = 251 + conns_step
-
+conns_max = 301 + conns_step
 
 rate_step = 20
 rate_min = 1
