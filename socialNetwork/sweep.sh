@@ -1,4 +1,4 @@
-dirname=/home/ubuntu/DeathStarBench/socialNetwork/sweeps
+dirname=/home/ubuntu/DeathStarBench/socialNetwork/sweeps2
 mkdir "$dirname"
 cd "$dirname"
 
@@ -26,7 +26,7 @@ echo "Starting..."
 for conns in {1..1001..50}; do
     mkdir "conns=$conns"
     cd "conns=$conns"
-    for rate in {1..2001..50}; do
+    for rate in {1..101..20}; do
         mkdir "rate=$rate"
         cd "rate=$rate"
 

@@ -9,5 +9,5 @@ wrk2/obj/
 wrk2/wrk
 /wrk2/deps/
 socialNetwork/deprecated/
-socialNetwork/experiments/
-socialNetwork/sweeps/
+# socialNetwork/experiments/
+# socialNetwork/sweeps/
