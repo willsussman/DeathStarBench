@@ -5,16 +5,13 @@ ports:
     targetPort: 8084
  
 container:
-  command: rate
+  command: ./rate
   image: deathstarbench/hotel-reservation
   name: hotel-reserv-rate
   ports:
   - containerPort: 8084
-  environments:
-    logLevel: INFO
-    jaegerSampleRatio: 1
 
 configMaps:
   - name: service-config.json
-    mountPath: /go/src/github.com/harlow/go-micro-services/config.json
+    mountPath: config.json
     value: service-config
