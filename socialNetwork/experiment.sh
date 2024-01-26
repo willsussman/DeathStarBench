@@ -1,8 +1,8 @@
 # mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # minimum: 6M
-mems=( "16M" "8M" )
+mems=( "512M" )
 candidates=(
     "user-mongodb"
-    "url-shorten-memcached"
+    # "url-shorten-memcached"
     # "user-timeline-mongodb"
     # "media-mongodb"
     # "post-storage-memcached"
@@ -35,12 +35,13 @@ urls=http://localhost:8080/wrk2-api/post/compose
 rate=100
 echo "/home/ubuntu/DeathStarBench/wrk2/wrk -D exp -t $threads -c $conns -d $duration -L -s $script $urls -R $rate -P" > load.txt
 
+echo "Setting defaults..."
 for candidate in "${candidates[@]}" # TODO: move this to docker-compose.yml
 do
-    echo "Setting defaults..."
     sudo docker update --memory 16G --memory-swap 16G $candidate
 done
 
+echo "Starting..."
 for candidate in "${candidates[@]}"
 do
     # echo $candidate
@@ -88,19 +89,19 @@ do
         echo "Saving..."
         # curl -o webhook_data.txt http://localhost:5000/query-file # -s for silent
         cd webhook_data
-        curl -o user_mongodb_webhook_data.txt http://localhost:5000/user-mongodb-query-file
-        curl -o url_shorten_memcached_webhook_data.txt http://localhost:5000/url-shorten-memcached-query-file
-        curl -o user_timeline_mongodb_webhook_data.txt http://localhost:5000/user-timeline-mongodb-query-file
-        curl -o media_mongodb_webhook_data.txt http://localhost:5000/media-mongodb-query-file
-        curl -o post_storage_memcached_webhook_data.txt http://localhost:5000/post-storage-memcached-query-file
-        curl -o home_timeline_redis_webhook_data.txt http://localhost:5000/home-timeline-redis-query-file
-        curl -o user_memcached_webhook_data.txt http://localhost:5000/user-memcached-query-file
-        curl -o social_graph_mongodb_webhook_data.txt http://localhost:5000/social-graph-mongodb-query-file
-        curl -o social_graph_redis_webhook_data.txt http://localhost:5000/social-graph-redis-query-file
-        curl -o url_shorten_mongodb_webhook_data.txt http://localhost:5000/url-shorten-mongodb-query-file
-        curl -o post_storage_mongodb_webhook_data.txt http://localhost:5000/post-storage-mongodb-query-file
-        curl -o user_timeline_redis_webhook_data.txt http://localhost:5000/user-timeline-redis-query-file
-        curl -o media_memcached_webhook_data.txt http://localhost:5000/media-memcached-query-file
+        curl -s -o user_mongodb_webhook_data.txt http://localhost:5000/user-mongodb-query-file
+        curl -s -o url_shorten_memcached_webhook_data.txt http://localhost:5000/url-shorten-memcached-query-file
+        curl -s -o user_timeline_mongodb_webhook_data.txt http://localhost:5000/user-timeline-mongodb-query-file
+        curl -s -o media_mongodb_webhook_data.txt http://localhost:5000/media-mongodb-query-file
+        curl -s -o post_storage_memcached_webhook_data.txt http://localhost:5000/post-storage-memcached-query-file
+        curl -s -o home_timeline_redis_webhook_data.txt http://localhost:5000/home-timeline-redis-query-file
+        curl -s -o user_memcached_webhook_data.txt http://localhost:5000/user-memcached-query-file
+        curl -s -o social_graph_mongodb_webhook_data.txt http://localhost:5000/social-graph-mongodb-query-file
+        curl -s -o social_graph_redis_webhook_data.txt http://localhost:5000/social-graph-redis-query-file
+        curl -s -o url_shorten_mongodb_webhook_data.txt http://localhost:5000/url-shorten-mongodb-query-file
+        curl -s -o post_storage_mongodb_webhook_data.txt http://localhost:5000/post-storage-mongodb-query-file
+        curl -s -o user_timeline_redis_webhook_data.txt http://localhost:5000/user-timeline-redis-query-file
+        curl -s -o media_memcached_webhook_data.txt http://localhost:5000/media-memcached-query-file
         cd ..
         sudo docker ps -a &> ps.txt
 
