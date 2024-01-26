@@ -10,4 +10,4 @@ wrk2/wrk
 /wrk2/deps/
 socialNetwork/deprecated/
 socialNetwork/experiments/
-socialNetwork/sweep/
+socialNetwork/sweeps/
