@@ -22,7 +22,7 @@ candidates=(
     "media-memcached"
 )
 
-dirname=/home/ubuntu/DeathStarBench/socialNetwork/experiments/"$1"
+dirname="$1"
 # mkdir "$dirname"
 cd "$dirname"
 # mkdir logs
@@ -112,11 +112,13 @@ do
         # sudo docker ps -a &> ps.txt
 
         # echo "Parsing..."
-        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py &> parse.txt
+        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py $candidate $mem &> parse.txt
         cd ..
     done
     cd ..
 done
+
+python /home/ubuntu/DeathStarBench/socialNetwork/summary.py "$dirname" &> summary.txt
 
 # echo "Saving logs..."
 # sudo docker ps -a &> final_ps.txt

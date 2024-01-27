@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 # import pandas as pd
 import numpy as np
 import statistics
+import sys
 
 services = [
     'user_mongodb',
@@ -24,7 +25,7 @@ services = [
     'media_memcached',
 ]
 
-def main():
+def main(candidate, mem):
 
     f = open('timing.txt', 'r')
     lines = f.read().split('\n')
@@ -39,28 +40,34 @@ def main():
     # f.close()
 
     f = open('0.txt', 'r')
-    latencies = [int(y) for y in f.read().split('\n')[:-1]]
+    latencies_us = [int(y) for y in f.read().split('\n')[:-1]]
+    latencies_ms = [y/1000 for y in latencies_us]
     f.close()
-    latencies_X = np.linspace(0, stop - start, len(latencies))
+    latencies_X = np.linspace(0, stop - start, len(latencies_ms))
 
     plt.figure()
-    plt.xlabel('Time')
-    plt.ylabel('Latency')
-    plt.plot(latencies_X, latencies, label='raw')
+    plt.title(f'{candidate} {mem}')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Latency (ms)')
+    plt.axvline(injection - start, linestyle='dashed', color='black')
 
-    alpha = 0.1
-    latencies_ewma = ewma(latencies, alpha)
-    stdev = statistics.stdev(latencies_ewma)
-    # mean = statistics.mean(latencies_ewma)
-    plt.plot(latencies_X, latencies_ewma, label=f'ewma({alpha})')
+    # alpha = 0.1
+    # latencies_ewma = ewma(latencies_ms, alpha)
+    # stdev = statistics.stdev(latencies_ewma)
+    # # mean = statistics.mean(latencies_ewma)
+    # plt.plot(latencies_X, latencies_ewma, label=f'ewma({alpha})')
     buttons_X = []
-    for i in range(1, len(latencies)):
+    thresh = 200
+    for i in range(len(latencies_ms)):
         # if latencies_ewma[i] > mean + 3*stdev:
-        if latencies_ewma[i] - latencies_ewma[i-1] > stdev:
+        # if latencies_ewma[i] - latencies_ewma[i-1] > stdev:
+        if latencies_ms[i] > thresh:
             plt.axvline(latencies_X[i], linestyle='solid', color='red')
             buttons_X.append(latencies_X[i])
+    plt.plot([0, stop-start], [thresh, thresh], linestyle='dashed', color='red')
+    plt.plot(latencies_X, latencies_ms, label='raw')
 
-    plt.legend()
+    # plt.legend()
     print(f'Saving latency.pdf...')
     plt.savefig('latency.pdf')
     # exit(0)
@@ -155,6 +162,7 @@ def main():
     #     bits2[job] = combine(bits[job])
     # print(max_timestamp)
     # exit(0)
+    button_elts = {}
     for job in bits.keys():
         # plt.figure()
         # fig, ax = plt.subplots()
@@ -172,6 +180,9 @@ def main():
         plt.ylim(-.05, 1.05)
         # twinax.plot(latencies_X, latencies_Y)
         plt.axvline(injection - start, linestyle='dashed', color='black')
+        for x in buttons_X:
+            plt.axvline(x, linestyle='solid', color='red')
+        button_bits = []
         for alertname in bits[job]:
             print(alertname)
             X = [t-start for (t, _) in bits[job][alertname]]
@@ -188,6 +199,9 @@ def main():
             X = X2
             Y = Y2
             # print(f'X2={X2}')
+
+            if len(buttons_X) > 0 and interpolate(X, Y, buttons_X[0]):
+                button_bits.append(alertname)
 
             X = X+[stop-start]
             Y = Y+[Y[-1]]
@@ -206,16 +220,26 @@ def main():
             # step2(X, Y, label=alertname)
             # plt.step([min_timestamp]+list(X)+[max_timestamp], [Y[0]]+list(Y)+[Y[-1]], where='post', linestyle='-', marker='', label=alertname)
             # plt.step(X+[max_timestamp], Y+[Y[-1]], where='post', linestyle='-', marker='o', label=alertname)
+        # print(f'button_bits={button_bits}')
+        # if len(button_bits) > 0:
+        button_elts[job] = button_bits
         plt.title(f'{job}')
-        
-
-        for x in buttons_X:
-            plt.axvline(x, linestyle='solid', color='red')
         plt.legend()
         print(f'Saving bitplots/{job}.pdf...')
         plt.savefig(f'bitplots/{job}.pdf')
         plt.close()
         print()
+    # print(f'len(buttons_X)={len(buttons_X)}')
+    print(button_elts)
+
+    output = {
+        'button': (len(buttons_X) > 0),
+        'elts': button_elts,
+    }
+
+    f = open("button.json", "w")
+    json.dump(output, f)
+    f.close()
 
     #starting time
     # start = pd.Timestamp(minimum)
@@ -254,15 +278,16 @@ def ewma(vec, alpha):
         out.append(alpha*vec[i] + (1-alpha)*out[i-1])
     return out
 
-def interpolate(x, data):
-    data_x, data_y = [t for (t, _) in data], [b for (_, b) in data]
-    if x < min(data_x):
+def interpolate(X, Y, x):
+    # data_x, data_y = [t for (t, _) in data], [b for (_, b) in data]
+    if x < X[0]:
+        print('WARNING: button precedes first bit')
         return 0
-    if x >= max(data_x):
-        return data_y[-1]
-    for i in range(len(data_x)-1):
-        if x >= data_x[i] and x < data_x[i+1]:
-            return data_y[i]
+    if x >= X[-1]:
+        return Y[-1]
+    for i in range(len(X)-1):
+        if x >= X[i] and x < X[i+1]:
+            return Y[i]
 
 # def step2(X, Y, label):
 #     for i in range(len(X)-1):
@@ -272,4 +297,9 @@ def interpolate(x, data):
 
 if __name__ == "__main__":
     # print('Entered parse.py')
-    main()
+    if len(sys.argv) != 3:
+        print('usage: parse.py SERVICE MEMORY')
+        exit(1)
+    candidate = sys.argv[1]
+    mem = sys.argv[2]
+    main(candidate, mem)

@@ -32,7 +32,7 @@ urls=http://localhost:8080/wrk2-api/post/compose
 # urls=http://localhost:8080/wrk2-api/home-timeline/read
 # urls=http://localhost:8080/wrk2-api/user-timeline/read
 # urls="http://localhost:8080/wrk2-api/post/compose http://localhost:8080/wrk2-api/home-timeline/read http://localhost:8080/wrk2-api/user-timeline/read"
-rate=1000
+rate=100
 echo "/home/ubuntu/DeathStarBench/wrk2/wrk -D exp -t $threads -c $conns -d $duration -L -s $script $urls -R $rate -P" > load.txt
 
 echo "Setting defaults..."
@@ -56,6 +56,9 @@ do
 
         mkdir bitplots
         mkdir webhook_data
+
+        echo "[$(date)] Buffer 15..."
+        sleep 15
 
         echo "Working..."
         /home/ubuntu/DeathStarBench/wrk2/wrk -D exp \
@@ -83,7 +86,8 @@ do
 
         echo "[$(date)] Stop" >> timing.txt
 
-        echo "Restoring default..."
+        echo "Restoring..."
+        sudo docker start $candidate
         sudo docker update --memory 16G --memory-swap 16G $candidate
 
         echo "Saving..."
@@ -106,11 +110,13 @@ do
         sudo docker ps -a &> ps.txt
 
         echo "Parsing..."
-        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py &> parse.txt
+        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py $candidate $mem &> parse.txt
         cd ..
     done
     cd ..
 done
+
+python /home/ubuntu/DeathStarBench/socialNetwork/summary.py "$dirname" &> summary.txt
 
 echo "Saving logs..."
 sudo docker ps -a &> final_ps.txt
