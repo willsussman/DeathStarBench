@@ -19,22 +19,22 @@ groups:
           annotations:
             description: NOT Instance is not reachable
 
-        - alert: '[Memcached] Low UpTime'
-          expr: |
-            memcached_uptime_seconds < 3600
-          # for 5m
-          labels:
-            severity: critical
-          annotations:
-            description: Uptime of less than 1 hour in a Memcached instance
-        - alert: '[Memcached] NOT Low UpTime'
-          expr: |
-            memcached_uptime_seconds >= 3600
-          # for 5m
-          labels:
-            severity: critical
-          annotations:
-            description: NOT Uptime of less than 1 hour in a Memcached instance
+        # - alert: '[Memcached] Low UpTime'
+        #   expr: |
+        #     memcached_uptime_seconds < 3600
+        #   # for 5m
+        #   labels:
+        #     severity: critical
+        #   annotations:
+        #     description: Uptime of less than 1 hour in a Memcached instance
+        # - alert: '[Memcached] NOT Low UpTime'
+        #   expr: |
+        #     memcached_uptime_seconds >= 3600
+        #   # for 5m
+        #   labels:
+        #     severity: critical
+        #   annotations:
+        #     description: NOT Uptime of less than 1 hour in a Memcached instance
 
         - alert: '[Memcached] Connection Throttled'
           expr: |
