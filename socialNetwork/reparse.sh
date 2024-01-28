@@ -5,7 +5,7 @@ fi
 
 
 mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # minimum: 6M
-# mems=( "512M" )
+# mems=( "512M" "256M" )
 candidates=(
     "user-mongodb"
     "url-shorten-memcached"
@@ -24,7 +24,7 @@ candidates=(
 
 dirname="$1"
 # mkdir "$dirname"
-cd "$dirname"
+# cd "$dirname"
 # mkdir logs
 
 # threads=1
@@ -39,7 +39,7 @@ cd "$dirname"
 # # urls=http://localhost:8080/wrk2-api/user-timeline/read
 # # urls="http://localhost:8080/wrk2-api/post/compose http://localhost:8080/wrk2-api/home-timeline/read http://localhost:8080/wrk2-api/user-timeline/read"
 # rate=100
-# echo "/home/ubuntu/DeathStarBench/wrk2/wrk -D exp -t $threads -c $conns -d $duration -L -s $script $urls -R $rate -P" > load.txt
+# echo "/home/ubuntu/DeathStarBench/wrk2/wrk -D exp -t $threads -c $conns -d $duration -L -s $script $urls -R $rate -P" > "$dirname"/load.txt
 
 # echo "Setting defaults..."
 # for candidate in "${candidates[@]}" # TODO: move this to docker-compose.yml
@@ -51,12 +51,12 @@ cd "$dirname"
 for candidate in "${candidates[@]}"
 do
     # echo $candidate
-    # mkdir "$candidate"
-    cd "$candidate"
+    # mkdir $candidate
+    # cd $candidate
     for mem in "${mems[@]}"
     do
-        # mkdir "$mem"
-        cd "$mem"
+        # mkdir $mem
+        # cd $mem
 
         echo $candidate $mem
 
@@ -72,22 +72,22 @@ do
         #     -s $script $urls \
         #     -R $rate \
         #     -P \
-        #     > wrk.txt 2>&1 &
+        #     > "$dirname"/combos/$candidate/$mem/wrk.txt 2>&1 &
 
-        # echo "[$(date)] Start" > timing.txt
+        # echo "[$(date)] Start" > "$dirname"/combos/$candidate/$mem/timing.txt
 
         # echo "[$(date)] Sleeping 15..."
         # sleep 15
 
         # echo "Injecting..."
-        # echo "[$(date)] sudo docker update --memory $mem --memory-swap $mem $candidate" >> timing.txt
-        # tail -n 1 timing.txt
+        # echo "[$(date)] sudo docker update --memory $mem --memory-swap $mem $candidate" >> "$dirname"/combos/$candidate/$mem/timing.txt
+        # tail -n 1 "$dirname"/combos/$candidate/$mem/timing.txt
         # sudo docker update --memory $mem --memory-swap $mem $candidate
 
         # echo "[$(date)] Sleeping 15..."
         # sleep 15
 
-        # echo "[$(date)] Stop" >> timing.txt
+        # echo "[$(date)] Stop" >> "$dirname"/combos/$candidate/$mem/timing.txt
 
         # echo "Restoring default..."
         # sudo docker update --memory 16G --memory-swap 16G $candidate
@@ -109,20 +109,22 @@ do
         # curl -s -o user_timeline_redis_webhook_data.txt http://localhost:5000/user-timeline-redis-query-file
         # curl -s -o media_memcached_webhook_data.txt http://localhost:5000/media-memcached-query-file
         # cd ..
-        # sudo docker ps -a &> ps.txt
+        # sudo docker ps -a &> "$dirname"/combos/$candidate/$mem/ps.txt
 
-        # echo "Parsing..."
-        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py $candidate $mem &> parse.txt
-        cd ..
+        echo "Parsing..."
+        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py "$dirname" $candidate $mem &> "$dirname"/combos/$candidate/$mem/parse.txt
+        # cd ..
     done
-    cd ..
+    # cd ..
 done
 
-python /home/ubuntu/DeathStarBench/socialNetwork/summary.py "$dirname" &> summary.txt
+echo "Done!"
+# echo "Summarizing..."
+# python /home/ubuntu/DeathStarBench/socialNetwork/summary.py "$dirname" &> "$dirname"/summary.txt
 
 # echo "Saving logs..."
-# sudo docker ps -a &> final_ps.txt
-# IFS=$'\n' read -d '' -r -a containers < <(awk '{print $NF}' final_ps.txt)
+# sudo docker ps -a &> "$dirname"/final_ps.txt
+# IFS=$'\n' read -d '' -r -a containers < <(awk '{print $NF}' "$dirname"/final_ps.txt)
 # for container in "${containers[@]:1}"; do
 #     echo "$container"
 #     sudo docker logs --timestamps "$container" &> logs/"$container".log

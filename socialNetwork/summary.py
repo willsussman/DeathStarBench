@@ -4,6 +4,7 @@ import json
 import pandas as pd
 
 mems = ['512M', '256M', '128M', '64M', '32M', '16M', '8M']
+# mems = ['512M', '256M']
 candidates = [
     'user-mongodb',
     'url-shorten-memcached',
@@ -27,7 +28,7 @@ def main(dirname):
         # results[candidate] = {}
         table[candidate] = {}
         for mem in mems:
-            f = open(f'{dirname}/{candidate}/{mem}/button.json', 'r')
+            f = open(f'{dirname}/combos/{candidate}/{mem}/button.json', 'r')
             data = json.load(f)
             # print()
             # print(f'candidate={candidate}, mem={mem}, data={data}')

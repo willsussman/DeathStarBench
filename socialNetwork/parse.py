@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import statistics
 import sys
+import pandas as pd
+import ruptures as rpt
 
 services = [
     'user_mongodb',
@@ -25,9 +27,10 @@ services = [
     'media_memcached',
 ]
 
-def main(candidate, mem):
+def main(dir, candidate, mem):
 
-    f = open('timing.txt', 'r')
+    combo = f'{dir}/combos/{candidate}/{mem}'
+    f = open(f'{combo}/timing.txt', 'r')
     lines = f.read().split('\n')
     f.close()
 
@@ -39,7 +42,7 @@ def main(candidate, mem):
     # duration = float(f.read().split(' requests in ')[1].split('s, ')[0])
     # f.close()
 
-    f = open('0.txt', 'r')
+    f = open(f'{combo}/0.txt', 'r')
     latencies_us = [int(y) for y in f.read().split('\n')[:-1]]
     latencies_ms = [y/1000 for y in latencies_us]
     f.close()
@@ -51,25 +54,81 @@ def main(candidate, mem):
     plt.ylabel('Latency (ms)')
     plt.axvline(injection - start, linestyle='dashed', color='black')
 
-    # alpha = 0.1
-    # latencies_ewma = ewma(latencies_ms, alpha)
-    # stdev = statistics.stdev(latencies_ewma)
-    # # mean = statistics.mean(latencies_ewma)
-    # plt.plot(latencies_X, latencies_ewma, label=f'ewma({alpha})')
+    # https://www.investopedia.com/articles/active-trading/052014/how-use-moving-average-buy-stocks.asp
+    # Another strategy is to apply two moving averages to a chart:
+    # one longer and one shorter. When the shorter-term MA crosses
+    # above the longer-term MA, it's a buy signal, as it indicates
+    # that the trend is shifting up. This is known as a golden
+    # cross. Meanwhile, when the shorter-term MA crosses below the
+    # longer-term MA, it's a sell signal, as it indicates that the
+    # trend is shifting down. This is known as a dead/death cross.
+
+    # window = 150
+    # rolling = pd.Series(latencies_ms).rolling(window)
+    # means = rolling.mean()
+    # stdevs = rolling.std()
+    # short = 0.25
+    # long = 0.1
+    # latencies_ewma_short = ewma(latencies_ms, short)
+    # latencies_ewma_long = ewma(latencies_ms, long)
+
+    # algo = rpt.Pelt(model="l2", min_size=28)
+    # algo.fit(impressions)
+    # result = algo.predict(pen=1)
+
+    # data = pd.read_csv(os.path.join(path, 'impressions.csv'), parse_dates=['Date'], usecols=['Date', 'Impressions'])
+    # data.set_index("Date", inplace=True)
+    # data = data.sort_index()
+    latencies_df = pd.DataFrame({
+        'latencies_X': latencies_X,
+        'latencies_ms': latencies_ms,
+        }).set_index('latencies_X')
+    # print(latencies_df)
+    # exit(1)
+
+    # impressions = data["Impressions"].values.reshape(-1, 1)
+
+
+    # print('\nmodel=rbf', flush=True)
+    # algo = rpt.Pelt(model="rbf").fit(latencies_df)
+    # for pen in range(9):
+    #     print(f'pen={pen}', flush=True)
+    #     result = algo.predict(pen=pen)
+    #     print(result, flush=True)
+    # # print('\nmodel=l1', flush=True)
+    # # algo = rpt.Pelt(model="l1").fit(latencies_df)
+    # # for pen in range(15):
+    # #     print(f'pen={pen}', flush=True)
+    # #     result = algo.predict(pen=pen)
+    # #     print(result, flush=True)
+    # print('\nmodel=l2', flush=True)
+    # algo = rpt.Pelt(model="l2").fit(latencies_df)
+    # for pen in range(15):
+    #     print(f'pen={pen}', flush=True)
+    #     result = algo.predict(pen=pen)
+    #     print(result, flush=True)
+
     buttons_X = []
-    thresh = 200
+    thresh = 250
+    # for i in range(window-1, len(latencies_ms)):
     for i in range(len(latencies_ms)):
         # if latencies_ewma[i] > mean + 3*stdev:
         # if latencies_ewma[i] - latencies_ewma[i-1] > stdev:
         if latencies_ms[i] > thresh:
+        # if latencies_ms[i] > means[i] + 2*stdevs[i]:
+        # if latencies_ewma_short[i] > latencies_ewma_long[i]:
             plt.axvline(latencies_X[i], linestyle='solid', color='red')
             buttons_X.append(latencies_X[i])
     plt.plot([0, stop-start], [thresh, thresh], linestyle='dashed', color='red')
     plt.plot(latencies_X, latencies_ms, label='raw')
+    # plt.plot(latencies_X, latencies_ewma_short, label=f'ewma({short})')
+    # plt.plot(latencies_X, latencies_ewma_long, label=f'ewma({long})')
+    # plt.plot(latencies_X, means, label=f'rolling({window}) mean')
+    # plt.plot(latencies_X, means + 2*stdevs, label=f'rolling({window}) mean + 2sd')
 
-    # plt.legend()
-    print(f'Saving latency.pdf...')
-    plt.savefig('latency.pdf')
+    plt.legend()
+    print(f'Saving {combo}/latency.pdf...')
+    plt.savefig(f'{combo}/latency.pdf')
     # exit(0)
     # latencies_X = np.linspace(0.0, duration, len(latencies_Y))
     # latencies_Y = [int(y) for y in contents[:-1]]
@@ -91,7 +150,7 @@ def main(candidate, mem):
         print(service)
         # url = 'http://localhost:5000/query-file'
         # f = urlopen(url)
-        f = open(f'webhook_data/{service}_webhook_data.txt', 'r')
+        f = open(f'{dir}/webhook_data/{service}_webhook_data.txt', 'r')
         # contents = f.read().decode('utf-8')
         contents = f.read()
         f.close()
@@ -225,8 +284,8 @@ def main(candidate, mem):
         button_elts[job] = button_bits
         plt.title(f'{job}')
         plt.legend()
-        print(f'Saving bitplots/{job}.pdf...')
-        plt.savefig(f'bitplots/{job}.pdf')
+        print(f'Saving {combo}/bitplots/{job}.pdf...')
+        plt.savefig(f'{combo}/bitplots/{job}.pdf')
         plt.close()
         print()
     # print(f'len(buttons_X)={len(buttons_X)}')
@@ -237,7 +296,7 @@ def main(candidate, mem):
         'elts': button_elts,
     }
 
-    f = open("button.json", "w")
+    f = open(f'{combo}/button.json', 'w')
     json.dump(output, f)
     f.close()
 
@@ -297,9 +356,10 @@ def interpolate(X, Y, x):
 
 if __name__ == "__main__":
     # print('Entered parse.py')
-    if len(sys.argv) != 3:
-        print('usage: parse.py SERVICE MEMORY')
+    if len(sys.argv) != 4:
+        print('usage: parse.py DIRECTORY SERVICE MEMORY')
         exit(1)
-    candidate = sys.argv[1]
-    mem = sys.argv[2]
-    main(candidate, mem)
+    dir = sys.argv[1]
+    candidate = sys.argv[2]
+    mem = sys.argv[3]
+    main(dir, candidate, mem)
