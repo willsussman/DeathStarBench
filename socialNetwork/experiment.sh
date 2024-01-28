@@ -4,6 +4,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 dirname="$1"
+echo "$dirname"
 
 mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # minimum: 6M
 # mems=( "512M" "256M" )
@@ -22,19 +23,19 @@ candidates=(
     "user-timeline-redis"
     "media-memcached"
 
-    # "social-graph-service"
-    # "compose-post-service"
-    # "post-storage-service"
-    # "user-timeline-service"
-    # "url-shorten-service"
-    # "user-service"
-    # "media-service"
-    # "text-service"
-    # "unique-id-service"
-    # "user-mention-service"
-    # "home-timeline-service"
-    # "nginx-thrift"
-    # "media-frontend"
+    "social-graph-service"
+    "compose-post-service"
+    "post-storage-service"
+    "user-timeline-service"
+    "url-shorten-service"
+    "user-service"
+    "media-service"
+    "text-service"
+    "unique-id-service"
+    "user-mention-service"
+    "home-timeline-service"
+    "nginx-thrift"
+    "media-frontend"
 )
 
 # dirname=/home/ubuntu/DeathStarBench/socialNetwork/experiments/"$(date)"
@@ -143,7 +144,20 @@ curl -s -o "$dirname"/webhook_data/url_shorten_mongodb_webhook_data.txt http://l
 curl -s -o "$dirname"/webhook_data/post_storage_mongodb_webhook_data.txt http://localhost:5000/post-storage-mongodb-query-file
 curl -s -o "$dirname"/webhook_data/user_timeline_redis_webhook_data.txt http://localhost:5000/user-timeline-redis-query-file
 curl -s -o "$dirname"/webhook_data/media_memcached_webhook_data.txt http://localhost:5000/media-memcached-query-file
-# cd ..
+
+curl -s -o "$dirname"/webhook_data/social_graph_service_webhook_data.txt http://localhost:5000/social-graph-service-query-file
+curl -s -o "$dirname"/webhook_data/compose_post_service_webhook_data.txt http://localhost:5000/compose-post-service-query-file
+curl -s -o "$dirname"/webhook_data/post_storage_service_webhook_data.txt http://localhost:5000/post-storage-service-query-file
+curl -s -o "$dirname"/webhook_data/user_timeline_service_webhook_data.txt http://localhost:5000/user-timeline-service-query-file
+curl -s -o "$dirname"/webhook_data/url_shorten_service_webhook_data.txt http://localhost:5000/url-shorten-service-query-file
+curl -s -o "$dirname"/webhook_data/user_service_webhook_data.txt http://localhost:5000/user-service-query-file
+curl -s -o "$dirname"/webhook_data/media_service_webhook_data.txt http://localhost:5000/media-service-query-file
+curl -s -o "$dirname"/webhook_data/text_service_webhook_data.txt http://localhost:5000/text-service-query-file
+curl -s -o "$dirname"/webhook_data/unique_id_service_webhook_data.txt http://localhost:5000/unique-id-service-query-file
+curl -s -o "$dirname"/webhook_data/user_mention_service_webhook_data.txt http://localhost:5000/user-mention-service-query-file
+curl -s -o "$dirname"/webhook_data/home_timeline_service_webhook_data.txt http://localhost:5000/home-timeline-service-query-file
+curl -s -o "$dirname"/webhook_data/nginx_thrift_webhook_data.txt http://localhost:5000/nginx-thrift-query-file
+curl -s -o "$dirname"/webhook_data/media_frontend_webhook_data.txt http://localhost:5000/media-frontend-query-file
 
 echo "Saving logs..."
 sudo docker ps -a &> "$dirname"/final_ps.txt
