@@ -6,6 +6,7 @@ services:
     image: prom/alertmanager
     hostname: social-graph-service-alertmanager
     container_name: social-graph-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/social-graph-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -15,6 +16,7 @@ services:
     image: prom/prometheus
     hostname: social-graph-service-prometheus
     container_name: social-graph-service-prometheus
+    restart: always
     ports:
       - "9104:9090"
     volumes:
@@ -23,9 +25,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   social-graph-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: social-graph-service-exporter
     container_name: social-graph-service-exporter
+    restart: always
     ports:
       - '9301:9300'
 
@@ -56,6 +59,7 @@ services:
     image: prom/alertmanager
     hostname: compose-post-service-alertmanager
     container_name: compose-post-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/compose-post-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -65,6 +69,7 @@ services:
     image: prom/prometheus
     hostname: compose-post-service-prometheus
     container_name: compose-post-service-prometheus
+    restart: always
     ports:
       - "9105:9090"
     volumes:
@@ -73,9 +78,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   compose-post-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: compose-post-service-exporter
     container_name: compose-post-service-exporter
+    restart: always
     ports:
       - '9302:9300'
 
@@ -104,6 +110,7 @@ services:
     image: prom/alertmanager
     hostname: post-storage-service-alertmanager
     container_name: post-storage-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/post-storage-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -113,6 +120,7 @@ services:
     image: prom/prometheus
     hostname: post-storage-service-prometheus
     container_name: post-storage-service-prometheus
+    restart: always
     ports:
       - "9106:9090"
     volumes:
@@ -121,9 +129,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   post-storage-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: post-storage-service-exporter
     container_name: post-storage-service-exporter
+    restart: always
     ports:
       - '9303:9300'
 
@@ -154,6 +163,7 @@ services:
     image: prom/alertmanager
     hostname: user-timeline-service-alertmanager
     container_name: user-timeline-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/user-timeline-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -163,6 +173,7 @@ services:
     image: prom/prometheus
     hostname: user-timeline-service-prometheus
     container_name: user-timeline-service-prometheus
+    restart: always
     ports:
       - "9107:9090"
     volumes:
@@ -171,9 +182,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   user-timeline-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: user-timeline-service-exporter
     container_name: user-timeline-service-exporter
+    restart: always
     ports:
       - '9304:9300'
 
@@ -204,6 +216,7 @@ services:
     image: prom/alertmanager
     hostname: url-shorten-service-alertmanager
     container_name: url-shorten-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/url-shorten-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -213,6 +226,7 @@ services:
     image: prom/prometheus
     hostname: url-shorten-service-prometheus
     container_name: url-shorten-service-prometheus
+    restart: always
     ports:
       - "9108:9090"
     volumes:
@@ -221,9 +235,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   url-shorten-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: url-shorten-service-exporter
     container_name: url-shorten-service-exporter
+    restart: always
     ports:
       - '9305:9300'
 
@@ -254,6 +269,7 @@ services:
     image: prom/alertmanager
     hostname: user-service-alertmanager
     container_name: user-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/user-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -263,6 +279,7 @@ services:
     image: prom/prometheus
     hostname: user-service-prometheus
     container_name: user-service-prometheus
+    restart: always
     ports:
       - "9109:9090"
     volumes:
@@ -271,9 +288,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   user-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: user-service-exporter
     container_name: user-service-exporter
+    restart: always
     ports:
       - '9306:9300'
 
@@ -304,6 +322,7 @@ services:
     image: prom/alertmanager
     hostname: media-service-alertmanager
     container_name: media-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/media-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -313,6 +332,7 @@ services:
     image: prom/prometheus
     hostname: media-service-prometheus
     container_name: media-service-prometheus
+    restart: always
     ports:
       - "9110:9090"
     volumes:
@@ -321,9 +341,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   media-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: media-service-exporter
     container_name: media-service-exporter
+    restart: always
     ports:
       - '9307:9300'
 
@@ -354,6 +375,7 @@ services:
     image: prom/alertmanager
     hostname: text-service-alertmanager
     container_name: text-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/text-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -363,6 +385,7 @@ services:
     image: prom/prometheus
     hostname: text-service-prometheus
     container_name: text-service-prometheus
+    restart: always
     ports:
       - "9111:9090"
     volumes:
@@ -371,9 +394,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   text-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: text-service-exporter
     container_name: text-service-exporter
+    restart: always
     ports:
       - '9308:9300'
 
@@ -402,6 +426,7 @@ services:
     image: prom/alertmanager
     hostname: unique-id-service-alertmanager
     container_name: unique-id-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/unique-id-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -411,6 +436,7 @@ services:
     image: prom/prometheus
     hostname: unique-id-service-prometheus
     container_name: unique-id-service-prometheus
+    restart: always
     ports:
       - "9112:9090"
     volumes:
@@ -419,9 +445,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   unique-id-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: unique-id-service-exporter
     container_name: unique-id-service-exporter
+    restart: always
     ports:
       - '9309:9300'
 
@@ -450,6 +477,7 @@ services:
     image: prom/alertmanager
     hostname: user-mention-service-alertmanager
     container_name: user-mention-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/user-mention-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -459,6 +487,7 @@ services:
     image: prom/prometheus
     hostname: user-mention-service-prometheus
     container_name: user-mention-service-prometheus
+    restart: always
     ports:
       - "9113:9090"
     volumes:
@@ -467,9 +496,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   user-mention-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: user-mention-service-exporter
     container_name: user-mention-service-exporter
+    restart: always
     ports:
       - '9310:9300'
 
@@ -498,6 +528,7 @@ services:
     image: prom/alertmanager
     hostname: home-timeline-service-alertmanager
     container_name: home-timeline-service-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/home-timeline-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -507,6 +538,7 @@ services:
     image: prom/prometheus
     hostname: home-timeline-service-prometheus
     container_name: home-timeline-service-prometheus
+    restart: always
     ports:
       - "9114:9090"
     volumes:
@@ -515,9 +547,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   home-timeline-service-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: home-timeline-service-exporter
     container_name: home-timeline-service-exporter
+    restart: always
     ports:
       - '9311:9300'
 
@@ -546,6 +579,7 @@ services:
     image: prom/alertmanager
     hostname: nginx-thrift-alertmanager
     container_name: nginx-thrift-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/nginx-thrift-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -555,6 +589,7 @@ services:
     image: prom/prometheus
     hostname: nginx-thrift-prometheus
     container_name: nginx-thrift-prometheus
+    restart: always
     ports:
       - "9115:9090"
     volumes:
@@ -563,9 +598,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   nginx-thrift-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: nginx-thrift-exporter
     container_name: nginx-thrift-exporter
+    restart: always
     ports:
       - '9313:9313'
 
@@ -598,6 +634,7 @@ services:
     image: prom/alertmanager
     hostname: media-frontend-alertmanager
     container_name: media-frontend-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/media-frontend-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -607,6 +644,7 @@ services:
     image: prom/prometheus
     hostname: media-frontend-prometheus
     container_name: media-frontend-prometheus
+    restart: always
     ports:
       - "9116:9090"
     volumes:
@@ -615,9 +653,10 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   media-frontend-exporter:
-    image: ubuntu
+    image: oliver006/redis_exporter # TODO
     hostname: media-frontend-exporter
     container_name: media-frontend-exporter
+    restart: always
     ports:
       - '9312:9312'
 
@@ -655,6 +694,7 @@ services:
     image: prom/alertmanager
     hostname: social-graph-mongodb-alertmanager
     container_name: social-graph-mongodb-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/social-graph-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -664,6 +704,7 @@ services:
     image: prom/prometheus
     hostname: social-graph-mongodb-prometheus
     container_name: social-graph-mongodb-prometheus
+    restart: always
     ports:
       - "9091:9090"
     volumes:
@@ -678,6 +719,7 @@ services:
     image: percona/mongodb_exporter:0.40.0
     hostname: social-graph-mongodb-exporter
     container_name: social-graph-mongodb-exporter
+    restart: always
     # command: ["--log.level=debug"]
     environment:
       - LOG_LEVEL=debug
@@ -706,6 +748,7 @@ services:
     image: prom/alertmanager
     hostname: post-storage-mongodb-alertmanager
     container_name: post-storage-mongodb-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/post-storage-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -715,6 +758,7 @@ services:
     image: prom/prometheus
     hostname: post-storage-mongodb-prometheus
     container_name: post-storage-mongodb-prometheus
+    restart: always
     ports:
       - "9092:9090"
     volumes:
@@ -729,6 +773,7 @@ services:
     image: percona/mongodb_exporter:0.40.0
     hostname: post-storage-mongodb-exporter
     container_name: post-storage-mongodb-exporter
+    restart: always
     # command: ["--log.level=debug"]
     environment:
       - LOG_LEVEL=debug
@@ -757,6 +802,7 @@ services:
     image: prom/alertmanager
     hostname: user-timeline-mongodb-alertmanager
     container_name: user-timeline-mongodb-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/user-timeline-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -766,6 +812,7 @@ services:
     image: prom/prometheus
     hostname: user-timeline-mongodb-prometheus
     container_name: user-timeline-mongodb-prometheus
+    restart: always
     ports:
       - "9093:9090"
     volumes:
@@ -780,6 +827,7 @@ services:
     image: percona/mongodb_exporter:0.40.0
     hostname: user-timeline-mongodb-exporter
     container_name: user-timeline-mongodb-exporter
+    restart: always
     # command: ["--log.level=debug"]
     environment:
       - LOG_LEVEL=debug
@@ -808,6 +856,7 @@ services:
     image: prom/alertmanager
     hostname: url-shorten-mongodb-alertmanager
     container_name: url-shorten-mongodb-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/url-shorten-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -817,6 +866,7 @@ services:
     image: prom/prometheus
     hostname: url-shorten-mongodb-prometheus
     container_name: url-shorten-mongodb-prometheus
+    restart: always
     ports:
       - "9094:9090"
     volumes:
@@ -831,6 +881,7 @@ services:
     image: percona/mongodb_exporter:0.40.0
     hostname: url-shorten-mongodb-exporter
     container_name: url-shorten-mongodb-exporter
+    restart: always
     # command: ["--log.level=debug"]
     environment:
       - LOG_LEVEL=debug
@@ -859,6 +910,7 @@ services:
     image: prom/alertmanager
     hostname: user-mongodb-alertmanager
     container_name: user-mongodb-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/user-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -868,6 +920,7 @@ services:
     image: prom/prometheus
     hostname: user-mongodb-prometheus
     container_name: user-mongodb-prometheus
+    restart: always
     ports:
       - "9095:9090"
     volumes:
@@ -882,6 +935,7 @@ services:
     image: percona/mongodb_exporter:0.40.0
     hostname: user-mongodb-exporter
     container_name: user-mongodb-exporter
+    restart: always
     # command: ["--log.level=debug"]
     environment:
       - LOG_LEVEL=debug
@@ -910,6 +964,7 @@ services:
     image: prom/alertmanager
     hostname: media-mongodb-alertmanager
     container_name: media-mongodb-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/media-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -919,6 +974,7 @@ services:
     image: prom/prometheus
     hostname: media-mongodb-prometheus
     container_name: media-mongodb-prometheus
+    restart: always
     ports:
       - "9096:9090"
     volumes:
@@ -933,6 +989,7 @@ services:
     image: percona/mongodb_exporter:0.40.0
     hostname: media-mongodb-exporter
     container_name: media-mongodb-exporter
+    restart: always
     # command: ["--log.level=debug"]
     environment:
       - LOG_LEVEL=debug
@@ -962,6 +1019,7 @@ services:
     image: prom/alertmanager
     hostname: social-graph-redis-alertmanager
     container_name: social-graph-redis-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/social-graph-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -971,6 +1029,7 @@ services:
     image: prom/prometheus
     hostname: social-graph-redis-prometheus
     container_name: social-graph-redis-prometheus
+    restart: always
     ports:
       - "9097:9090"
     volumes:
@@ -984,6 +1043,7 @@ services:
     image: oliver006/redis_exporter
     hostname: social-graph-redis-exporter
     container_name: social-graph-redis-exporter
+    restart: always
     command:
       - '--redis.addr=social-graph-redis:6379'
       # - '--redis.addr=home-timeline-redis:6379'
@@ -1014,6 +1074,7 @@ services:
     image: prom/alertmanager
     hostname: home-timeline-redis-alertmanager
     container_name: home-timeline-redis-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/home-timeline-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -1023,6 +1084,7 @@ services:
     image: prom/prometheus
     hostname: home-timeline-redis-prometheus
     container_name: home-timeline-redis-prometheus
+    restart: always
     ports:
       - "9098:9090"
     volumes:
@@ -1036,6 +1098,7 @@ services:
     image: oliver006/redis_exporter
     hostname: home-timeline-redis-exporter
     container_name: home-timeline-redis-exporter
+    restart: always
     command:
       # - '--redis.addr=social-graph-redis:6379'
       - '--redis.addr=home-timeline-redis:6379'
@@ -1066,6 +1129,7 @@ services:
     image: prom/alertmanager
     hostname: user-timeline-redis-alertmanager
     container_name: user-timeline-redis-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/user-timeline-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -1075,6 +1139,7 @@ services:
     image: prom/prometheus
     hostname: user-timeline-redis-prometheus
     container_name: user-timeline-redis-prometheus
+    restart: always
     ports:
       - "9099:9090"
     volumes:
@@ -1088,6 +1153,7 @@ services:
     image: oliver006/redis_exporter
     hostname: user-timeline-redis-exporter
     container_name: user-timeline-redis-exporter
+    restart: always
     command:
       # - '--redis.addr=social-graph-redis:6379'
       # - '--redis.addr=home-timeline-redis:6379'
@@ -1119,6 +1185,7 @@ services:
     image: prom/alertmanager
     hostname: post-storage-memcached-alertmanager
     container_name: post-storage-memcached-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/post-storage-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -1128,6 +1195,7 @@ services:
     image: prom/prometheus
     hostname: post-storage-memcached-prometheus
     container_name: post-storage-memcached-prometheus
+    restart: always
     ports:
       - "9100:9090"
     volumes:
@@ -1146,6 +1214,7 @@ services:
     #   - '--memcached.address=media-memcached:11211'
     hostname: post-storage-memcached-exporter
     container_name: post-storage-memcached-exporter
+    restart: always
     ports:
       - '9151:9150'
     # volumes:
@@ -1176,6 +1245,7 @@ services:
     image: prom/alertmanager
     hostname: url-shorten-memcached-alertmanager
     container_name: url-shorten-memcached-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/url-shorten-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -1185,6 +1255,7 @@ services:
     image: prom/prometheus
     hostname: url-shorten-memcached-prometheus
     container_name: url-shorten-memcached-prometheus
+    restart: always
     ports:
       - "9101:9090"
     volumes:
@@ -1203,6 +1274,7 @@ services:
     #   - '--memcached.address=media-memcached:11211'
     hostname: url-shorten-memcached-exporter
     container_name: url-shorten-memcached-exporter
+    restart: always
     ports:
       - '9152:9150'
     # volumes:
@@ -1233,6 +1305,7 @@ services:
     image: prom/alertmanager
     hostname: user-memcached-alertmanager
     container_name: user-memcached-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/user-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -1242,6 +1315,7 @@ services:
     image: prom/prometheus
     hostname: user-memcached-prometheus
     container_name: user-memcached-prometheus
+    restart: always
     ports:
       - "9102:9090"
     volumes:
@@ -1260,6 +1334,7 @@ services:
     #   - '--memcached.address=media-memcached:11211'
     hostname: user-memcached-exporter
     container_name: user-memcached-exporter
+    restart: always
     ports:
       - '9153:9150'
     # volumes:
@@ -1290,6 +1365,7 @@ services:
     image: prom/alertmanager
     hostname: media-memcached-alertmanager
     container_name: media-memcached-alertmanager
+    restart: always
     volumes:
       - ./alertmanager/media-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
@@ -1299,6 +1375,7 @@ services:
     image: prom/prometheus
     hostname: media-memcached-prometheus
     container_name: media-memcached-prometheus
+    restart: always
     ports:
       - "9103:9090"
     volumes:
@@ -1317,6 +1394,7 @@ services:
       - '--memcached.address=media-memcached:11211'
     hostname: media-memcached-exporter
     container_name: media-memcached-exporter
+    restart: always
     ports:
       - '9154:9150'
     # volumes:
@@ -1371,6 +1449,7 @@ services:
     image: webhook-receiver
     hostname: webhook-receiver
     container_name: webhook-receiver
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile-webhook-receiver
