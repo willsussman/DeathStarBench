@@ -1,0 +1,20 @@
+# https://promcat.io/
+groups:
+    - name: NginxThrift
+      rules:
+        # - alert: '[Redis] Low UpTime'
+        #   expr: |
+        #     redis_uptime_in_seconds < 3600
+        #   # for 15m
+        #   labels:
+        #     severity: critical
+        #   annotations:
+        #     description: Uptime of less than 1 hour in a redis instance
+        # - alert: '[Redis] NOT Low UpTime'
+        #   expr: |
+        #     redis_uptime_in_seconds >= 3600
+        #   # for 15m
+        #   labels:
+        #     severity: critical
+        #   annotations:
+        #     description: NOT Uptime of less than 1 hour in a redis instance

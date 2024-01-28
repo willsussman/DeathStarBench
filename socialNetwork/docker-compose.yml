@@ -1,6 +1,34 @@
 version: "3.9"
 services:
 
+
+  social-graph-service-alertmanager:
+    image: prom/alertmanager
+    hostname: social-graph-service-alertmanager
+    container_name: social-graph-service-alertmanager
+    volumes:
+      - ./alertmanager/social-graph-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9223:9093"
+
+  social-graph-service-prometheus:
+    image: prom/prometheus
+    hostname: social-graph-service-prometheus
+    container_name: social-graph-service-prometheus
+    ports:
+      - "9104:9090"
+    volumes:
+      - ./prometheus/social-graph-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  social-graph-service-exporter:
+    image: ubuntu
+    hostname: social-graph-service-exporter
+    container_name: social-graph-service-exporter
+    ports:
+      - '9301:9300'
+
   social-graph-service:
     image: deathstarbench/social-network-microservices:latest
     # init: true
@@ -24,6 +52,33 @@ services:
     #   retries: 3
     #   start_period: 60s
 
+  compose-post-service-alertmanager:
+    image: prom/alertmanager
+    hostname: compose-post-service-alertmanager
+    container_name: compose-post-service-alertmanager
+    volumes:
+      - ./alertmanager/compose-post-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9224:9093"
+
+  compose-post-service-prometheus:
+    image: prom/prometheus
+    hostname: compose-post-service-prometheus
+    container_name: compose-post-service-prometheus
+    ports:
+      - "9105:9090"
+    volumes:
+      - ./prometheus/compose-post-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  compose-post-service-exporter:
+    image: ubuntu
+    hostname: compose-post-service-exporter
+    container_name: compose-post-service-exporter
+    ports:
+      - '9302:9300'
+
   compose-post-service:
     image: deathstarbench/social-network-microservices:latest
     # init: true
@@ -44,6 +99,33 @@ services:
     #   timeout: 30s
     #   retries: 3
     #   start_period: 60s
+
+  post-storage-service-alertmanager:
+    image: prom/alertmanager
+    hostname: post-storage-service-alertmanager
+    container_name: post-storage-service-alertmanager
+    volumes:
+      - ./alertmanager/post-storage-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9225:9093"
+
+  post-storage-service-prometheus:
+    image: prom/prometheus
+    hostname: post-storage-service-prometheus
+    container_name: post-storage-service-prometheus
+    ports:
+      - "9106:9090"
+    volumes:
+      - ./prometheus/post-storage-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  post-storage-service-exporter:
+    image: ubuntu
+    hostname: post-storage-service-exporter
+    container_name: post-storage-service-exporter
+    ports:
+      - '9303:9300'
 
   post-storage-service:
     image: deathstarbench/social-network-microservices:latest
@@ -68,6 +150,33 @@ services:
     #   retries: 3
     #   start_period: 60s
 
+  user-timeline-service-alertmanager:
+    image: prom/alertmanager
+    hostname: user-timeline-service-alertmanager
+    container_name: user-timeline-service-alertmanager
+    volumes:
+      - ./alertmanager/user-timeline-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9226:9093"
+
+  user-timeline-service-prometheus:
+    image: prom/prometheus
+    hostname: user-timeline-service-prometheus
+    container_name: user-timeline-service-prometheus
+    ports:
+      - "9107:9090"
+    volumes:
+      - ./prometheus/user-timeline-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  user-timeline-service-exporter:
+    image: ubuntu
+    hostname: user-timeline-service-exporter
+    container_name: user-timeline-service-exporter
+    ports:
+      - '9304:9300'
+
   user-timeline-service:
     image: deathstarbench/social-network-microservices:latest
     # init: true
@@ -90,6 +199,33 @@ services:
     #   timeout: 30s
     #   retries: 3
     #   start_period: 60s
+
+  url-shorten-service-alertmanager:
+    image: prom/alertmanager
+    hostname: url-shorten-service-alertmanager
+    container_name: url-shorten-service-alertmanager
+    volumes:
+      - ./alertmanager/url-shorten-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9227:9093"
+
+  url-shorten-service-prometheus:
+    image: prom/prometheus
+    hostname: url-shorten-service-prometheus
+    container_name: url-shorten-service-prometheus
+    ports:
+      - "9108:9090"
+    volumes:
+      - ./prometheus/url-shorten-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  url-shorten-service-exporter:
+    image: ubuntu
+    hostname: url-shorten-service-exporter
+    container_name: url-shorten-service-exporter
+    ports:
+      - '9305:9300'
 
   url-shorten-service:
     image: deathstarbench/social-network-microservices:latest
@@ -114,6 +250,33 @@ services:
     #   retries: 3
     #   start_period: 60s
 
+  user-service-alertmanager:
+    image: prom/alertmanager
+    hostname: user-service-alertmanager
+    container_name: user-service-alertmanager
+    volumes:
+      - ./alertmanager/user-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9228:9093"
+
+  user-service-prometheus:
+    image: prom/prometheus
+    hostname: user-service-prometheus
+    container_name: user-service-prometheus
+    ports:
+      - "9109:9090"
+    volumes:
+      - ./prometheus/user-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  user-service-exporter:
+    image: ubuntu
+    hostname: user-service-exporter
+    container_name: user-service-exporter
+    ports:
+      - '9306:9300'
+
   user-service:
     image: deathstarbench/social-network-microservices:latest
     # init: true
@@ -136,6 +299,33 @@ services:
     #   timeout: 30s
     #   retries: 3
     #   start_period: 60s
+
+  media-service-alertmanager:
+    image: prom/alertmanager
+    hostname: media-service-alertmanager
+    container_name: media-service-alertmanager
+    volumes:
+      - ./alertmanager/media-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9229:9093"
+
+  media-service-prometheus:
+    image: prom/prometheus
+    hostname: media-service-prometheus
+    container_name: media-service-prometheus
+    ports:
+      - "9110:9090"
+    volumes:
+      - ./prometheus/media-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  media-service-exporter:
+    image: ubuntu
+    hostname: media-service-exporter
+    container_name: media-service-exporter
+    ports:
+      - '9307:9300'
 
   media-service:
     image: deathstarbench/social-network-microservices:latest
@@ -160,6 +350,33 @@ services:
     #   retries: 3
     #   start_period: 60s
 
+  text-service-alertmanager:
+    image: prom/alertmanager
+    hostname: text-service-alertmanager
+    container_name: text-service-alertmanager
+    volumes:
+      - ./alertmanager/text-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9230:9093"
+
+  text-service-prometheus:
+    image: prom/prometheus
+    hostname: text-service-prometheus
+    container_name: text-service-prometheus
+    ports:
+      - "9111:9090"
+    volumes:
+      - ./prometheus/text-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  text-service-exporter:
+    image: ubuntu
+    hostname: text-service-exporter
+    container_name: text-service-exporter
+    ports:
+      - '9308:9300'
+
   text-service:
     image: deathstarbench/social-network-microservices:latest
     # init: true
@@ -180,6 +397,33 @@ services:
     #   timeout: 30s
     #   retries: 3
     #   start_period: 60s
+
+  unique-id-service-alertmanager:
+    image: prom/alertmanager
+    hostname: unique-id-service-alertmanager
+    container_name: unique-id-service-alertmanager
+    volumes:
+      - ./alertmanager/unique-id-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9231:9093"
+
+  unique-id-service-prometheus:
+    image: prom/prometheus
+    hostname: unique-id-service-prometheus
+    container_name: unique-id-service-prometheus
+    ports:
+      - "9112:9090"
+    volumes:
+      - ./prometheus/unique-id-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  unique-id-service-exporter:
+    image: ubuntu
+    hostname: unique-id-service-exporter
+    container_name: unique-id-service-exporter
+    ports:
+      - '9309:9300'
 
   unique-id-service:
     image: deathstarbench/social-network-microservices:latest
@@ -202,6 +446,33 @@ services:
     #   retries: 3
     #   start_period: 60s
 
+  user-mention-service-alertmanager:
+    image: prom/alertmanager
+    hostname: user-mention-service-alertmanager
+    container_name: user-mention-service-alertmanager
+    volumes:
+      - ./alertmanager/user-mention-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9232:9093"
+
+  user-mention-service-prometheus:
+    image: prom/prometheus
+    hostname: user-mention-service-prometheus
+    container_name: user-mention-service-prometheus
+    ports:
+      - "9113:9090"
+    volumes:
+      - ./prometheus/user-mention-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  user-mention-service-exporter:
+    image: ubuntu
+    hostname: user-mention-service-exporter
+    container_name: user-mention-service-exporter
+    ports:
+      - '9310:9300'
+
   user-mention-service:
     image: deathstarbench/social-network-microservices:latest
     # init: true
@@ -223,6 +494,33 @@ services:
     #   retries: 3
     #   start_period: 60s
 
+  home-timeline-service-alertmanager:
+    image: prom/alertmanager
+    hostname: home-timeline-service-alertmanager
+    container_name: home-timeline-service-alertmanager
+    volumes:
+      - ./alertmanager/home-timeline-service-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9233:9093"
+
+  home-timeline-service-prometheus:
+    image: prom/prometheus
+    hostname: home-timeline-service-prometheus
+    container_name: home-timeline-service-prometheus
+    ports:
+      - "9114:9090"
+    volumes:
+      - ./prometheus/home-timeline-service:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  home-timeline-service-exporter:
+    image: ubuntu
+    hostname: home-timeline-service-exporter
+    container_name: home-timeline-service-exporter
+    ports:
+      - '9311:9300'
+
   home-timeline-service:
     image: deathstarbench/social-network-microservices:latest
     # init: true
@@ -243,6 +541,33 @@ services:
     #   timeout: 30s
     #   retries: 3
     #   start_period: 60s
+
+  nginx-thrift-alertmanager:
+    image: prom/alertmanager
+    hostname: nginx-thrift-alertmanager
+    container_name: nginx-thrift-alertmanager
+    volumes:
+      - ./alertmanager/nginx-thrift-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9234:9093"
+
+  nginx-thrift-prometheus:
+    image: prom/prometheus
+    hostname: nginx-thrift-prometheus
+    container_name: nginx-thrift-prometheus
+    ports:
+      - "9115:9090"
+    volumes:
+      - ./prometheus/nginx-thrift:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  nginx-thrift-exporter:
+    image: ubuntu
+    hostname: nginx-thrift-exporter
+    container_name: nginx-thrift-exporter
+    ports:
+      - '9313:9313'
 
   nginx-thrift:
     image: yg397/openresty-thrift:xenial
@@ -269,6 +594,33 @@ services:
     #   retries: 3
     #   start_period: 60s
 
+  media-frontend-alertmanager:
+    image: prom/alertmanager
+    hostname: media-frontend-alertmanager
+    container_name: media-frontend-alertmanager
+    volumes:
+      - ./alertmanager/media-frontend-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9235:9093"
+
+  media-frontend-prometheus:
+    image: prom/prometheus
+    hostname: media-frontend-prometheus
+    container_name: media-frontend-prometheus
+    ports:
+      - "9116:9090"
+    volumes:
+      - ./prometheus/media-frontend:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  media-frontend-exporter:
+    image: ubuntu
+    hostname: media-frontend-exporter
+    container_name: media-frontend-exporter
+    ports:
+      - '9312:9312'
+
   media-frontend:
     image: yg397/media-frontend:xenial
     # init: true
@@ -290,28 +642,12 @@ services:
     #   retries: 3
     #   start_period: 60s
 
-  jaeger-agent:
-    image: jaegertracing/all-in-one:latest
-    # init: true
-    hostname: jaeger-agent
-    container_name: jaeger-agent
-    ports:
-      #      - 5775:5775/udp
-      #      - 6831:6831/udp
-      #      - 6832:6832/udp
-      #      - 5778:5778
-      - 16686:16686
-      #      - 14268:14268
-      #      - 9411:9411
-    restart: always
-    environment:
-      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
-    # healthcheck:
-    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "16686"]
-    #   interval: 40s
-    #   timeout: 30s
-    #   retries: 3
-    #   start_period: 60s
+
+
+
+
+
+
 
 
 
@@ -322,7 +658,7 @@ services:
     volumes:
       - ./alertmanager/social-graph-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9104:9093"
+      - "9236:9093"
 
   social-graph-mongodb-prometheus:
     image: prom/prometheus
@@ -373,7 +709,7 @@ services:
     volumes:
       - ./alertmanager/post-storage-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9105:9093"
+      - "9237:9093"
 
   post-storage-mongodb-prometheus:
     image: prom/prometheus
@@ -424,7 +760,7 @@ services:
     volumes:
       - ./alertmanager/user-timeline-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9107:9093"
+      - "9238:9093"
 
   user-timeline-mongodb-prometheus:
     image: prom/prometheus
@@ -475,7 +811,7 @@ services:
     volumes:
       - ./alertmanager/url-shorten-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9106:9093"
+      - "9239:9093"
 
   url-shorten-mongodb-prometheus:
     image: prom/prometheus
@@ -526,7 +862,7 @@ services:
     volumes:
       - ./alertmanager/user-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9108:9093"
+      - "9240:9093"
 
   user-mongodb-prometheus:
     image: prom/prometheus
@@ -577,7 +913,7 @@ services:
     volumes:
       - ./alertmanager/media-mongodb-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9109:9093"
+      - "9241:9093"
 
   media-mongodb-prometheus:
     image: prom/prometheus
@@ -629,7 +965,7 @@ services:
     volumes:
       - ./alertmanager/social-graph-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9110:9093"
+      - "9242:9093"
 
   social-graph-redis-prometheus:
     image: prom/prometheus
@@ -681,7 +1017,7 @@ services:
     volumes:
       - ./alertmanager/home-timeline-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9111:9093"
+      - "9243:9093"
 
   home-timeline-redis-prometheus:
     image: prom/prometheus
@@ -733,7 +1069,7 @@ services:
     volumes:
       - ./alertmanager/user-timeline-redis-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9112:9093"
+      - "9244:9093"
 
   user-timeline-redis-prometheus:
     image: prom/prometheus
@@ -786,7 +1122,7 @@ services:
     volumes:
       - ./alertmanager/post-storage-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9113:9093"
+      - "9245:9093"
 
   post-storage-memcached-prometheus:
     image: prom/prometheus
@@ -843,7 +1179,7 @@ services:
     volumes:
       - ./alertmanager/url-shorten-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9114:9093"
+      - "9246:9093"
 
   url-shorten-memcached-prometheus:
     image: prom/prometheus
@@ -900,7 +1236,7 @@ services:
     volumes:
       - ./alertmanager/user-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9115:9093"
+      - "9247:9093"
 
   user-memcached-prometheus:
     image: prom/prometheus
@@ -957,7 +1293,7 @@ services:
     volumes:
       - ./alertmanager/media-memcached-alertmanager.yml:/etc/alertmanager/alertmanager.yml
     ports:
-      - "9116:9093"
+      - "9248:9093"
 
   media-memcached-prometheus:
     image: prom/prometheus
@@ -1008,7 +1344,28 @@ services:
     #   start_period: 60s
 
 
-
+  jaeger-agent:
+    image: jaegertracing/all-in-one:latest
+    # init: true
+    hostname: jaeger-agent
+    container_name: jaeger-agent
+    ports:
+      #      - 5775:5775/udp
+      #      - 6831:6831/udp
+      #      - 6832:6832/udp
+      #      - 5778:5778
+      - 16686:16686
+      #      - 14268:14268
+      #      - 9411:9411
+    restart: always
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    # healthcheck:
+    #   test: ["CMD", "nc", "-vz", "127.0.0.1", "16686"]
+    #   interval: 40s
+    #   timeout: 30s
+    #   retries: 3
+    #   start_period: 60s
 
   webhook-receiver:
     image: webhook-receiver

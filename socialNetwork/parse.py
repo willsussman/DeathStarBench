@@ -25,6 +25,20 @@ services = [
     'post_storage_mongodb',
     'user_timeline_redis',
     'media_memcached',
+
+    # 'social_graph_service',
+    # 'compose_post_service',
+    # 'post_storage_service',
+    # 'user_timeline_service',
+    # 'url_shorten_service',
+    # 'user_service',
+    # 'media_service',
+    # 'text_service',
+    # 'unique_id_service',
+    # 'user_mention_service',
+    # 'home_timeline_service',
+    # 'nginx_thrift',
+    # 'media_frontend',
 ]
 
 def main(dir, candidate, mem):
@@ -109,7 +123,7 @@ def main(dir, candidate, mem):
     #     print(result, flush=True)
 
     buttons_X = []
-    thresh = 250
+    thresh = 350
     # for i in range(window-1, len(latencies_ms)):
     for i in range(len(latencies_ms)):
         # if latencies_ewma[i] > mean + 3*stdev:
@@ -126,7 +140,7 @@ def main(dir, candidate, mem):
     # plt.plot(latencies_X, means, label=f'rolling({window}) mean')
     # plt.plot(latencies_X, means + 2*stdevs, label=f'rolling({window}) mean + 2sd')
 
-    plt.legend()
+    # plt.legend()
     print(f'Saving {combo}/latency.pdf...')
     plt.savefig(f'{combo}/latency.pdf')
     # exit(0)

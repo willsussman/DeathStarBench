@@ -20,6 +20,20 @@ candidates=(
     "post-storage-mongodb"
     "user-timeline-redis"
     "media-memcached"
+
+    # "social-graph-service"
+    # "compose-post-service"
+    # "post-storage-service"
+    # "user-timeline-service"
+    # "url-shorten-service"
+    # "user-service"
+    # "media-service"
+    # "text-service"
+    # "unique-id-service"
+    # "user-mention-service"
+    # "home-timeline-service"
+    # "nginx-thrift"
+    # "media-frontend"
 )
 
 dirname="$1"
