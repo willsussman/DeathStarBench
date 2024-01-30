@@ -10,7 +10,7 @@ scrape_configs:
 
   - job_name: 'compose-post-service-exporter'
     static_configs:
-      - targets: ['compose-post-service-exporter:9300']
+      - targets: ['compose-post-service-exporter:9100']
 
 alerting:
   alertmanagers:

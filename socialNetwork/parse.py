@@ -42,9 +42,9 @@ services = [
     'media_frontend',
 ]
 
-def main(dir, candidate, mem):
+def main(dir, candidate, fault):
 
-    combo = f'{dir}/combos/{candidate}/{mem}'
+    combo = f'{dir}/combos/{candidate}/{fault}'
     f = open(f'{combo}/timing.txt', 'r')
     lines = f.read().split('\n')
     f.close()
@@ -64,7 +64,7 @@ def main(dir, candidate, mem):
     latencies_X = np.linspace(0, stop - start, len(latencies_ms))
 
     plt.figure()
-    plt.title(f'{candidate} {mem}')
+    plt.title(f'{candidate} {fault}')
     plt.xlabel('Time (s)')
     plt.ylabel('Latency (ms)')
     plt.axvline(injection - start, linestyle='dashed', color='black')
@@ -225,11 +225,14 @@ def main(dir, candidate, mem):
                 #     max_timestamp = timestamp
                 # fingerprint = alert['fingerprint']
 
-                if 'NOT' in alertname:
+                if 'NOT ' in alertname:
                     bit = 0
                     alertname = alertname.replace('NOT ', '')
                     # print(alertname)
                     # exit(0)
+                elif 'NOT' in alertname:
+                    bit = 0
+                    alertname = alertname.replace('NOT', '')
                 else:
                     bit = 1
 
@@ -402,9 +405,9 @@ def interpolate(X, Y, x):
 if __name__ == "__main__":
     # print('Entered parse.py')
     if len(sys.argv) != 4:
-        print('usage: parse.py DIRECTORY SERVICE MEMORY')
+        print('usage: parse.py DIRECTORY SERVICE FAULT')
         exit(1)
     dir = sys.argv[1]
     candidate = sys.argv[2]
-    mem = sys.argv[3]
-    main(dir, candidate, mem)
+    fault = sys.argv[3]
+    main(dir, candidate, fault)

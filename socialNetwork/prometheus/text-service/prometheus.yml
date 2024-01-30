@@ -10,7 +10,7 @@ scrape_configs:
 
   - job_name: 'text-service-exporter'
     static_configs:
-      - targets: ['text-service-exporter:9300']
+      - targets: ['text-service-exporter:9100']
 
 alerting:
   alertmanagers:

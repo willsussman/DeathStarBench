@@ -10,7 +10,7 @@ scrape_configs:
 
   - job_name: 'unique-id-service-exporter'
     static_configs:
-      - targets: ['unique-id-service-exporter:9300']
+      - targets: ['unique-id-service-exporter:9100']
 
 alerting:
   alertmanagers:

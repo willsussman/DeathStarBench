@@ -3,7 +3,9 @@ import os
 import json
 import pandas as pd
 
-mems = ['512M', '256M', '128M', '64M', '32M', '16M', '8M', 'off']
+# mems = ['512M', '256M', '128M', '64M', '32M', '16M', '8M', 'off']
+cpus = ['1', '0.5', '0.25', '0.125', '0.0625', '0.03125', '0.015625']
+faults = cpus
 # mems = ['512M', '256M']
 candidates = [
     'user-mongodb',
@@ -41,17 +43,17 @@ def main(dirname):
     for candidate in candidates:
         # results[candidate] = {}
         table[candidate] = {}
-        for mem in mems:
-            f = open(f'{dirname}/combos/{candidate}/{mem}/button.json', 'r')
+        for fault in faults:
+            f = open(f'{dirname}/combos/{candidate}/{fault}/button.json', 'r')
             data = json.load(f)
             # print()
             # print(f'candidate={candidate}, mem={mem}, data={data}')
             f.close()
 
             if data['button']:
-                table[candidate][mem] = f'{sum([(len(value)>0) for value in data["elts"].values()])}, {sum([len(value) for value in data["elts"].values()])}, {len(data["elts"][candidate.replace("-","_")])>0}'
+                table[candidate][fault] = f'{sum([(len(value)>0) for value in data["elts"].values()])}, {sum([len(value) for value in data["elts"].values()])}, {len(data["elts"][candidate.replace("-","_")])>0}'
             else:
-                table[candidate][mem] = '-'
+                table[candidate][fault] = '-'
     # print(results)
     df = pd.DataFrame(table).transpose()
     pd.set_option('display.max_rows', None)  # Replace None with a specific number if needed

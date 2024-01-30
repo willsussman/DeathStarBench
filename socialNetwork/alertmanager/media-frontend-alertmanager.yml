@@ -2,7 +2,7 @@ global:
   resolve_timeout: 5m
 
 route:
-  group_by: ['job']
+  group_by: ['alertname']
   # group_by: ['alertname', 'cluster', 'service']
   group_wait: 0s # Time to wait for the first alert to be grouped with subsequent ones.
   group_interval: 1s # Time between sending notifications for groups.

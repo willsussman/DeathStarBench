@@ -44,7 +44,7 @@ services:
     container_name: social-graph-service-exporter
     restart: always
     ports:
-      - '9301:9300'
+      - '9301:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -99,7 +99,7 @@ services:
     container_name: compose-post-service-exporter
     restart: always
     ports:
-      - '9302:9300'
+      - '9302:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -152,7 +152,7 @@ services:
     container_name: post-storage-service-exporter
     restart: always
     ports:
-      - '9303:9300'
+      - '9303:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -207,7 +207,7 @@ services:
     container_name: user-timeline-service-exporter
     restart: always
     ports:
-      - '9304:9300'
+      - '9304:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -262,7 +262,7 @@ services:
     container_name: url-shorten-service-exporter
     restart: always
     ports:
-      - '9305:9300'
+      - '9305:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -317,7 +317,7 @@ services:
     container_name: user-service-exporter
     restart: always
     ports:
-      - '9306:9300'
+      - '9306:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -372,7 +372,7 @@ services:
     container_name: media-service-exporter
     restart: always
     ports:
-      - '9307:9300'
+      - '9307:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -427,7 +427,7 @@ services:
     container_name: text-service-exporter
     restart: always
     ports:
-      - '9308:9300'
+      - '9308:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -480,7 +480,7 @@ services:
     container_name: unique-id-service-exporter
     restart: always
     ports:
-      - '9309:9300'
+      - '9309:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -533,7 +533,7 @@ services:
     container_name: user-mention-service-exporter
     restart: always
     ports:
-      - '9310:9300'
+      - '9310:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -586,7 +586,7 @@ services:
     container_name: home-timeline-service-exporter
     restart: always
     ports:
-      - '9311:9300'
+      - '9311:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -639,7 +639,7 @@ services:
     container_name: nginx-thrift-exporter
     restart: always
     ports:
-      - '9313:9313'
+      - '9313:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -696,7 +696,7 @@ services:
     container_name: media-frontend-exporter
     restart: always
     ports:
-      - '9312:9312'
+      - '9312:9100'
     # volumes:
     #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
@@ -766,6 +766,12 @@ services:
       - MONGODB_URI=mongodb://social-graph-mongodb:27017
     ports:
       - '9217:9216' # host:container
+    # args:
+    #   - >
+    #     /bin/mongodb_exporter --web.listen-address ":9216"
+    #     --mongodb.uri=mongodb://exporter:password@localhost:27017/config? --log.level="debug"  --collect-all
+    # command: --mongodb.uri=“mongodb://localhost:27017/admin” --collect-all --discovering-mode
+    command: --collect-all
 
   social-graph-mongodb:
     image: mongo:4.4.6
@@ -820,6 +826,7 @@ services:
       - MONGODB_URI=mongodb://post-storage-mongodb:27017
     ports:
       - '9218:9216' # host:container
+    command: --collect-all
 
   post-storage-mongodb:
     image: mongo:4.4.6
@@ -874,6 +881,7 @@ services:
       - MONGODB_URI=mongodb://user-timeline-mongodb:27017
     ports:
       - '9219:9216' # host:container
+    command: --collect-all
 
   user-timeline-mongodb:
     image: mongo:4.4.6
@@ -928,6 +936,7 @@ services:
       - MONGODB_URI=mongodb://url-shorten-mongodb:27017
     ports:
       - '9220:9216' # host:container
+    command: --collect-all
 
   url-shorten-mongodb:
     image: mongo:4.4.6
@@ -982,6 +991,7 @@ services:
       - MONGODB_URI=mongodb://user-mongodb:27017
     ports:
       - '9221:9216' # host:container
+    command: --collect-all
 
   user-mongodb:
     image: mongo:4.4.6
@@ -1036,6 +1046,7 @@ services:
       - MONGODB_URI=mongodb://media-mongodb:27017
     ports:
       - '9222:9216' # host:container
+    command: --collect-all
 
   media-mongodb:
     image: mongo:4.4.6
