@@ -4,8 +4,8 @@ if [ "$#" -ne 1 ]; then
 fi
 
 
-mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # minimum: 6M
-# mems=( "512M" "256M" )
+mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" "off" ) # minimum: 6M
+# mems=( "512M" "16M" )
 candidates=(
     "user-mongodb"
     "url-shorten-memcached"

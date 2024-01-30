@@ -1,6 +1,20 @@
 version: "3.9"
 services:
 
+  # cadvisor:
+  #   image: gcr.io/cadvisor/cadvisor:latest
+  #   hostname: cadvisor
+  #   container_name: cadvisor
+  #   restart: always
+  #   ports:
+  #   - 8082:8080
+  #   volumes:
+  #   - /:/rootfs:ro
+  #   - /var/run:/var/run:rw
+  #   - /sys:/sys:ro
+  #   - /var/lib/docker/:/var/lib/docker:ro
+  #   # depends_on:
+  #   # - redis
 
   social-graph-service-alertmanager:
     image: prom/alertmanager
@@ -25,12 +39,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   social-graph-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: social-graph-service-exporter
     container_name: social-graph-service-exporter
     restart: always
     ports:
       - '9301:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   social-graph-service:
     image: deathstarbench/social-network-microservices:latest
@@ -78,12 +94,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   compose-post-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: compose-post-service-exporter
     container_name: compose-post-service-exporter
     restart: always
     ports:
       - '9302:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   compose-post-service:
     image: deathstarbench/social-network-microservices:latest
@@ -129,12 +147,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   post-storage-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: post-storage-service-exporter
     container_name: post-storage-service-exporter
     restart: always
     ports:
       - '9303:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   post-storage-service:
     image: deathstarbench/social-network-microservices:latest
@@ -182,12 +202,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   user-timeline-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: user-timeline-service-exporter
     container_name: user-timeline-service-exporter
     restart: always
     ports:
       - '9304:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   user-timeline-service:
     image: deathstarbench/social-network-microservices:latest
@@ -235,12 +257,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   url-shorten-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: url-shorten-service-exporter
     container_name: url-shorten-service-exporter
     restart: always
     ports:
       - '9305:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   url-shorten-service:
     image: deathstarbench/social-network-microservices:latest
@@ -288,12 +312,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   user-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: user-service-exporter
     container_name: user-service-exporter
     restart: always
     ports:
       - '9306:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   user-service:
     image: deathstarbench/social-network-microservices:latest
@@ -341,12 +367,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   media-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: media-service-exporter
     container_name: media-service-exporter
     restart: always
     ports:
       - '9307:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   media-service:
     image: deathstarbench/social-network-microservices:latest
@@ -394,12 +422,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   text-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: text-service-exporter
     container_name: text-service-exporter
     restart: always
     ports:
       - '9308:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   text-service:
     image: deathstarbench/social-network-microservices:latest
@@ -445,12 +475,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   unique-id-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: unique-id-service-exporter
     container_name: unique-id-service-exporter
     restart: always
     ports:
       - '9309:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   unique-id-service:
     image: deathstarbench/social-network-microservices:latest
@@ -496,12 +528,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   user-mention-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: user-mention-service-exporter
     container_name: user-mention-service-exporter
     restart: always
     ports:
       - '9310:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   user-mention-service:
     image: deathstarbench/social-network-microservices:latest
@@ -547,12 +581,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   home-timeline-service-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: home-timeline-service-exporter
     container_name: home-timeline-service-exporter
     restart: always
     ports:
       - '9311:9300'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   home-timeline-service:
     image: deathstarbench/social-network-microservices:latest
@@ -598,12 +634,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   nginx-thrift-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: nginx-thrift-exporter
     container_name: nginx-thrift-exporter
     restart: always
     ports:
       - '9313:9313'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   nginx-thrift:
     image: yg397/openresty-thrift:xenial
@@ -653,12 +691,14 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   media-frontend-exporter:
-    image: oliver006/redis_exporter # TODO
+    image: prom/node-exporter:latest
     hostname: media-frontend-exporter
     container_name: media-frontend-exporter
     restart: always
     ports:
       - '9312:9312'
+    # volumes:
+    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   media-frontend:
     image: yg397/media-frontend:xenial

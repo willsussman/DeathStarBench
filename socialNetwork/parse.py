@@ -10,6 +10,7 @@ import statistics
 import sys
 import pandas as pd
 import ruptures as rpt
+from scipy import stats
 
 services = [
     'user_mongodb',
@@ -68,23 +69,23 @@ def main(dir, candidate, mem):
     plt.ylabel('Latency (ms)')
     plt.axvline(injection - start, linestyle='dashed', color='black')
 
-    # https://www.investopedia.com/articles/active-trading/052014/how-use-moving-average-buy-stocks.asp
-    # Another strategy is to apply two moving averages to a chart:
-    # one longer and one shorter. When the shorter-term MA crosses
-    # above the longer-term MA, it's a buy signal, as it indicates
-    # that the trend is shifting up. This is known as a golden
-    # cross. Meanwhile, when the shorter-term MA crosses below the
-    # longer-term MA, it's a sell signal, as it indicates that the
-    # trend is shifting down. This is known as a dead/death cross.
-
-    # window = 150
-    # rolling = pd.Series(latencies_ms).rolling(window)
+    alpha = 0.01
+    # beta = 0.001
+    latencies_ewma = ewma(latencies_ms, alpha)
+    # window = 100
+    # latencies_ms_var = pd.Series(latencies_ms).rolling(window).var()
+    # latencies_ewma_var = pd.Series(latencies_ewma).rolling(window).var()
+    # latencies_ewma_var2 = pd.Series(latencies_ewma_var).rolling(window).var()
     # means = rolling.mean()
     # stdevs = rolling.std()
     # short = 0.25
     # long = 0.1
     # latencies_ewma_short = ewma(latencies_ms, short)
     # latencies_ewma_long = ewma(latencies_ms, long)
+
+    # latencies_ms_cusum = cusum(latencies_ms)
+    # latencies_cusum = cusum(latencies_ewma)
+    # print(latencies_cusum)
 
     # algo = rpt.Pelt(model="l2", min_size=28)
     # algo.fit(impressions)
@@ -93,10 +94,10 @@ def main(dir, candidate, mem):
     # data = pd.read_csv(os.path.join(path, 'impressions.csv'), parse_dates=['Date'], usecols=['Date', 'Impressions'])
     # data.set_index("Date", inplace=True)
     # data = data.sort_index()
-    latencies_df = pd.DataFrame({
-        'latencies_X': latencies_X,
-        'latencies_ms': latencies_ms,
-        }).set_index('latencies_X')
+    # latencies_df = pd.DataFrame({
+    #     'latencies_X': latencies_X,
+    #     'latencies_ms': latencies_ms,
+    #     }).set_index('latencies_X')
     # print(latencies_df)
     # exit(1)
 
@@ -123,24 +124,45 @@ def main(dir, candidate, mem):
     #     print(result, flush=True)
 
     buttons_X = []
-    thresh = 350
+    thresh = 250
+    print(f'thresh={thresh}')
     # for i in range(window-1, len(latencies_ms)):
-    for i in range(len(latencies_ms)):
+    # window = 300
+    # alpha = 0.01
+    # for i in range(window, len(latencies_ewma)-window+1):
+    for i in range(len(latencies_ewma)):
+        # print(len(latencies_ms[i-window:i]))
+        # assert(len(latencies_ms[i-window:i]) == window)
+        # print(len(latencies_ms[i:i+window]))
+        # assert(len(latencies_ms[i:i+window]) == window)
+        # t_stat, p_val = stats.ttest_ind(latencies_ewma[i-window:i], latencies_ewma[i:i+window])
+        # print(p_val)
         # if latencies_ewma[i] > mean + 3*stdev:
         # if latencies_ewma[i] - latencies_ewma[i-1] > stdev:
-        if latencies_ms[i] > thresh:
+        # if latencies_ms[i] > thresh and latencies_X[i] > 1:
         # if latencies_ms[i] > means[i] + 2*stdevs[i]:
         # if latencies_ewma_short[i] > latencies_ewma_long[i]:
+        # if p_val < alpha:
+        if latencies_ewma[i] > thresh:
             plt.axvline(latencies_X[i], linestyle='solid', color='red')
             buttons_X.append(latencies_X[i])
     plt.plot([0, stop-start], [thresh, thresh], linestyle='dashed', color='red')
+    # plt.xlim(0, 3)
     plt.plot(latencies_X, latencies_ms, label='raw')
+    plt.plot(latencies_X, latencies_ewma, label=f'ewma({alpha})')
+    # plt.plot(latencies_X, latencies_ms_var, label=f'raw.var({window})')
+    # plt.plot(latencies_X, latencies_ewma_var, label=f'ewma.var({window})')
+    # plt.plot(latencies_X[1:], [latencies_ewma_var[i]/latencies_ewma_var[i-1] for i in range(1,len(latencies_ewma_var))], label='ratio')
+    # plt.plot(latencies_X, latencies_ewma_var2, label=f'var2({window})')
+    # plt.plot([0, stop-start], [statistics.mean(latencies_ewma), statistics.mean(latencies_ewma)], label=f'mean(ewma)')
+    # plt.plot(latencies_X, latencies_ms_cusum, label=f'raw.cusum')
+    # plt.plot(latencies_X, latencies_cusum, label=f'cusum')
     # plt.plot(latencies_X, latencies_ewma_short, label=f'ewma({short})')
     # plt.plot(latencies_X, latencies_ewma_long, label=f'ewma({long})')
     # plt.plot(latencies_X, means, label=f'rolling({window}) mean')
     # plt.plot(latencies_X, means + 2*stdevs, label=f'rolling({window}) mean + 2sd')
 
-    # plt.legend()
+    plt.legend()
     print(f'Saving {combo}/latency.pdf...')
     plt.savefig(f'{combo}/latency.pdf')
     # exit(0)
@@ -349,6 +371,15 @@ def ewma(vec, alpha):
     out = [vec[0]]
     for i in range(1, len(vec)):
         out.append(alpha*vec[i] + (1-alpha)*out[i-1])
+    return out
+
+def cusum(vec):
+    mean = statistics.mean(vec)
+    # print(f'mean={mean}')
+    out = [0]
+    for i in range(1, len(vec)):
+        # print(f'vec[i]={vec[i]}; adding {vec[i]-mean}')
+        out.append(out[i-1] + vec[i]-mean)
     return out
 
 def interpolate(X, Y, x):

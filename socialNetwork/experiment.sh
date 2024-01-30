@@ -6,7 +6,7 @@ fi
 dirname="$1"
 echo "$dirname"
 
-mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # minimum: 6M
+mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" "off" ) # minimum: 6M
 # mems=( "512M" "256M" )
 candidates=(
     "user-mongodb"
@@ -103,9 +103,15 @@ do
         sleep 15
 
         echo "Injecting..."
-        echo "[$(date)] sudo docker update --memory $mem --memory-swap $mem $candidate" >> "$dirname"/combos/$candidate/$mem/timing.txt
-        tail -n 1 "$dirname"/combos/$candidate/$mem/timing.txt
-        sudo docker update --memory $mem --memory-swap $mem $candidate
+        if [ "$mem" = "off" ]; then
+            echo "[$(date)] sudo docker stop $candidate" >> "$dirname"/combos/$candidate/$mem/timing.txt
+            tail -n 1 "$dirname"/combos/$candidate/$mem/timing.txt
+            sudo docker stop $candidate
+        else
+            echo "[$(date)] sudo docker update --memory $mem --memory-swap $mem $candidate" >> "$dirname"/combos/$candidate/$mem/timing.txt
+            tail -n 1 "$dirname"/combos/$candidate/$mem/timing.txt
+            sudo docker update --memory $mem --memory-swap $mem $candidate
+        fi
 
         echo "[$(date)] Sleeping 15..."
         sleep 15
@@ -113,9 +119,12 @@ do
         echo "[$(date)] Stop" >> "$dirname"/combos/$candidate/$mem/timing.txt
 
         echo "Restoring..."
-        # sudo docker start $candidate
-        sudo docker update --memory 16G --memory-swap 16G $candidate
-        sudo docker restart $candidate
+        if [ "$mem" = "off" ]; then
+            sudo docker start $candidate
+        else
+            sudo docker update --memory 16G --memory-swap 16G $candidate
+            sudo docker restart $candidate
+        fi
 
         # echo "Saving..."
         sudo docker ps -a &> "$dirname"/combos/$candidate/$mem/ps.txt

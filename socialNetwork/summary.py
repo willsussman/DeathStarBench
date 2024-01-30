@@ -3,7 +3,7 @@ import os
 import json
 import pandas as pd
 
-mems = ['512M', '256M', '128M', '64M', '32M', '16M', '8M']
+mems = ['512M', '256M', '128M', '64M', '32M', '16M', '8M', 'off']
 # mems = ['512M', '256M']
 candidates = [
     'user-mongodb',
@@ -20,19 +20,19 @@ candidates = [
     'user-timeline-redis',
     'media-memcached',
 
-    'social_graph_service',
-    'compose_post_service',
-    'post_storage_service',
-    'user_timeline_service',
-    'url_shorten_service',
-    'user_service',
-    'media_service',
-    'text_service',
-    'unique_id_service',
-    'user_mention_service',
-    'home_timeline_service',
-    'nginx_thrift',
-    'media_frontend',
+    'social-graph-service',
+    'compose-post-service',
+    'post-storage-service',
+    'user-timeline-service',
+    'url-shorten-service',
+    'user-service',
+    'media-service',
+    'text-service',
+    'unique-id-service',
+    'user-mention-service',
+    'home-timeline-service',
+    'nginx-thrift',
+    'media-frontend',
 ]
 
 def main(dirname):
