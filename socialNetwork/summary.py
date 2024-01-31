@@ -5,34 +5,34 @@ import pandas as pd
 
 mems = ['512M', '256M', '128M', '64M', '32M', '16M', '8M'] # 'off'
 cpus = ['1', '0.5', '0.25', '0.125', '0.0625', '0.03125', '0.015625']
-# faults = cpus
-# mems = ['512M', '256M']
+# mems = ['512M', '256M'] # 'off'
+# cpus = ['1', '0.5']
 candidates = [
     'user-mongodb',
     'url-shorten-memcached',
-    # 'user-timeline-mongodb',
-    # 'media-mongodb',
-    # 'post-storage-memcached',
-    # 'home-timeline-redis',
-    # 'user-memcached',
-    # 'social-graph-mongodb',
-    # 'social-graph-redis',
-    # 'url-shorten-mongodb',
-    # 'post-storage-mongodb',
-    # 'user-timeline-redis',
-    # 'media-memcached',
+    'user-timeline-mongodb',
+    'media-mongodb',
+    'post-storage-memcached',
+    'home-timeline-redis',
+    'user-memcached',
+    'social-graph-mongodb',
+    'social-graph-redis',
+    'url-shorten-mongodb',
+    'post-storage-mongodb',
+    'user-timeline-redis',
+    'media-memcached',
 
-    # 'social-graph-service',
-    # 'compose-post-service',
-    # 'post-storage-service',
-    # 'user-timeline-service',
-    # 'url-shorten-service',
-    # 'user-service',
-    # 'media-service',
-    # 'text-service',
-    # 'unique-id-service',
-    # 'user-mention-service',
-    # 'home-timeline-service',
+    'social-graph-service',
+    'compose-post-service',
+    'post-storage-service',
+    'user-timeline-service',
+    'url-shorten-service',
+    'user-service',
+    'media-service',
+    'text-service',
+    'unique-id-service',
+    'user-mention-service',
+    'home-timeline-service',
 ]
 
 def main(dirname):

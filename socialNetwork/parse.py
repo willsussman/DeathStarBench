@@ -15,29 +15,29 @@ from scipy import stats
 services = [
     'user_mongodb',
     'url_shorten_memcached',
-    # 'user_timeline_mongodb',
-    # 'media_mongodb',
-    # 'post_storage_memcached',
-    # 'home_timeline_redis',
-    # 'user_memcached',
-    # 'social_graph_mongodb',
-    # 'social_graph_redis',
-    # 'url_shorten_mongodb',
-    # 'post_storage_mongodb',
-    # 'user_timeline_redis',
-    # 'media_memcached',
+    'user_timeline_mongodb',
+    'media_mongodb',
+    'post_storage_memcached',
+    'home_timeline_redis',
+    'user_memcached',
+    'social_graph_mongodb',
+    'social_graph_redis',
+    'url_shorten_mongodb',
+    'post_storage_mongodb',
+    'user_timeline_redis',
+    'media_memcached',
 
-    # 'social_graph_service',
-    # 'compose_post_service',
-    # 'post_storage_service',
-    # 'user_timeline_service',
-    # 'url_shorten_service',
-    # 'user_service',
-    # 'media_service',
-    # 'text_service',
-    # 'unique_id_service',
-    # 'user_mention_service',
-    # 'home_timeline_service',
+    'social_graph_service',
+    'compose_post_service',
+    'post_storage_service',
+    'user_timeline_service',
+    'url_shorten_service',
+    'user_service',
+    'media_service',
+    'text_service',
+    'unique_id_service',
+    'user_mention_service',
+    'home_timeline_service',
 ]
 
 def main(dir, candidate, kind, param):
@@ -209,7 +209,7 @@ def main(dir, candidate, kind, param):
                 #     print('TODO: resolved')
                 #     continue
                 labels = alert['labels']
-                print(labels)
+                # print(labels)
                 alertname = labels['alertname'] # 'RedisReplicationDown'
                 # job = labels['job'] # 'home-timeline-redis-exporter'
                 # if job == 'post-storage-memcached-exporter':
@@ -296,8 +296,13 @@ def main(dir, candidate, kind, param):
             Y = Y2
             # print(f'X2={X2}')
 
+            first = None
+            for i in range(len(X)):
+                if X[i] >= 0:
+                    first = i
             # if len(buttons_X) > 0 and interpolate(X, Y, buttons_X[0]):
-            if len(buttons_X) > 0 and increased(X, Y, buttons_X[0]):
+            if len(buttons_X) > 0 and first is not None and increased(X[first:], Y[first:], buttons_X[0]):
+                print(f'{alertname} increased!')
                 button_bits.append(alertname)
 
             X = X+[stop-start]
@@ -396,6 +401,9 @@ def interpolate(X, Y, x):
             return Y[i]
 
 def increased(X, Y, x):
+    print(X)
+    print(Y)
+    print(x)
     if x < X[0]:
         print('WARNING: button precedes first bit')
         return 0
@@ -405,7 +413,7 @@ def increased(X, Y, x):
             i_max = i
             break
     for i in range(i_max):
-        if x[i+1] > x[i]:
+        if Y[i+1] > Y[i]:
             return 1
 
 # def step2(X, Y, label):
