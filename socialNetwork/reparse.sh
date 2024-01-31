@@ -4,37 +4,36 @@ if [ "$#" -ne 1 ]; then
 fi
 
 
-# mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" "off" ) # minimum: 6M
-cpus=( "1" "0.5" "0.25" "0.125" "0.0625" "0.03125" "0.015625" )
-# mems=( "512M" "16M" )
+# mems=( "512M" "256M" "128M" "64M" "32M" "16M" "8M" ) # "off" # minimum: 6M
+# cpus=( "1" "0.5" "0.25" "0.125" "0.0625" "0.03125" "0.015625" )
+mems=( "512M" "256M" ) # "off" # minimum: 6M
+cpus=( "1" "0.5" )
 candidates=(
     "user-mongodb"
     "url-shorten-memcached"
-    "user-timeline-mongodb"
-    "media-mongodb"
-    "post-storage-memcached"
-    "home-timeline-redis"
-    "user-memcached"
-    "social-graph-mongodb"
-    "social-graph-redis"
-    "url-shorten-mongodb"
-    "post-storage-mongodb"
-    "user-timeline-redis"
-    "media-memcached"
+    # "user-timeline-mongodb"
+    # "media-mongodb"
+    # "post-storage-memcached"
+    # "home-timeline-redis"
+    # "user-memcached"
+    # "social-graph-mongodb"
+    # "social-graph-redis"
+    # "url-shorten-mongodb"
+    # "post-storage-mongodb"
+    # "user-timeline-redis"
+    # "media-memcached"
 
-    "social-graph-service"
-    "compose-post-service"
-    "post-storage-service"
-    "user-timeline-service"
-    "url-shorten-service"
-    "user-service"
-    "media-service"
-    "text-service"
-    "unique-id-service"
-    "user-mention-service"
-    "home-timeline-service"
-    "nginx-thrift"
-    "media-frontend"
+    # "social-graph-service"
+    # "compose-post-service"
+    # "post-storage-service"
+    # "user-timeline-service"
+    # "url-shorten-service"
+    # "user-service"
+    # "media-service"
+    # "text-service"
+    # "unique-id-service"
+    # "user-mention-service"
+    # "home-timeline-service"
 )
 
 dirname="$1"
@@ -65,18 +64,18 @@ dirname="$1"
 # echo "Starting..."
 for candidate in "${candidates[@]}"
 do
-    # for mem in "${mems[@]}"
-    # do
-    #     echo $candidate $mem
-    #     echo "Parsing..."
-    #     python /home/ubuntu/DeathStarBench/socialNetwork/parse.py "$dirname" $candidate $mem &> "$dirname"/combos/$candidate/$mem/parse.txt
-    # done
+    for mem in "${mems[@]}"
+    do
+        echo $candidate mem=$mem
+        echo "Parsing..."
+        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py "$dirname" $candidate mem $mem &> "$dirname"/combos/$candidate/$mem/parse.txt
+    done
 
     for cpu in "${cpus[@]}"
     do
-        echo $candidate $cpu
+        echo $candidate cpu=$cpu
         echo "Parsing..."
-        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py "$dirname" $candidate $cpu &> "$dirname"/combos/$candidate/$cpu/parse.txt
+        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py "$dirname" $candidate cpu $cpu &> "$dirname"/combos/$candidate/$cpu/parse.txt
     done
 done
 

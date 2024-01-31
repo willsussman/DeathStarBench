@@ -15,36 +15,34 @@ from scipy import stats
 services = [
     'user_mongodb',
     'url_shorten_memcached',
-    'user_timeline_mongodb',
-    'media_mongodb',
-    'post_storage_memcached',
-    'home_timeline_redis',
-    'user_memcached',
-    'social_graph_mongodb',
-    'social_graph_redis',
-    'url_shorten_mongodb',
-    'post_storage_mongodb',
-    'user_timeline_redis',
-    'media_memcached',
+    # 'user_timeline_mongodb',
+    # 'media_mongodb',
+    # 'post_storage_memcached',
+    # 'home_timeline_redis',
+    # 'user_memcached',
+    # 'social_graph_mongodb',
+    # 'social_graph_redis',
+    # 'url_shorten_mongodb',
+    # 'post_storage_mongodb',
+    # 'user_timeline_redis',
+    # 'media_memcached',
 
-    'social_graph_service',
-    'compose_post_service',
-    'post_storage_service',
-    'user_timeline_service',
-    'url_shorten_service',
-    'user_service',
-    'media_service',
-    'text_service',
-    'unique_id_service',
-    'user_mention_service',
-    'home_timeline_service',
-    'nginx_thrift',
-    'media_frontend',
+    # 'social_graph_service',
+    # 'compose_post_service',
+    # 'post_storage_service',
+    # 'user_timeline_service',
+    # 'url_shorten_service',
+    # 'user_service',
+    # 'media_service',
+    # 'text_service',
+    # 'unique_id_service',
+    # 'user_mention_service',
+    # 'home_timeline_service',
 ]
 
-def main(dir, candidate, fault):
+def main(dir, candidate, kind, param):
 
-    combo = f'{dir}/combos/{candidate}/{fault}'
+    combo = f'{dir}/combos/{candidate}/{kind}/{param}'
     f = open(f'{combo}/timing.txt', 'r')
     lines = f.read().split('\n')
     f.close()
@@ -64,7 +62,7 @@ def main(dir, candidate, fault):
     latencies_X = np.linspace(0, stop - start, len(latencies_ms))
 
     plt.figure()
-    plt.title(f'{candidate} {fault}')
+    plt.title(f'{candidate} {kind}={param}')
     plt.xlabel('Time (s)')
     plt.ylabel('Latency (ms)')
     plt.axvline(injection - start, linestyle='dashed', color='black')
@@ -124,7 +122,7 @@ def main(dir, candidate, fault):
     #     print(result, flush=True)
 
     buttons_X = []
-    thresh = 250
+    thresh = 200
     print(f'thresh={thresh}')
     # for i in range(window-1, len(latencies_ms)):
     # window = 300
@@ -230,9 +228,9 @@ def main(dir, candidate, fault):
                     alertname = alertname.replace('NOT ', '')
                     # print(alertname)
                     # exit(0)
-                elif 'NOT' in alertname:
-                    bit = 0
-                    alertname = alertname.replace('NOT', '')
+                # elif 'NOT' in alertname:
+                #     bit = 0
+                #     alertname = alertname.replace('NOT', '')
                 else:
                     bit = 1
 
@@ -298,7 +296,8 @@ def main(dir, candidate, fault):
             Y = Y2
             # print(f'X2={X2}')
 
-            if len(buttons_X) > 0 and interpolate(X, Y, buttons_X[0]):
+            # if len(buttons_X) > 0 and interpolate(X, Y, buttons_X[0]):
+            if len(buttons_X) > 0 and increased(X, Y, buttons_X[0]):
                 button_bits.append(alertname)
 
             X = X+[stop-start]
@@ -396,6 +395,19 @@ def interpolate(X, Y, x):
         if x >= X[i] and x < X[i+1]:
             return Y[i]
 
+def increased(X, Y, x):
+    if x < X[0]:
+        print('WARNING: button precedes first bit')
+        return 0
+    i_max = len(X)-1
+    for i in range(len(X)-1):
+        if x >= X[i] and x < X[i+1]:
+            i_max = i
+            break
+    for i in range(i_max):
+        if x[i+1] > x[i]:
+            return 1
+
 # def step2(X, Y, label):
 #     for i in range(len(X)-1):
 #         plt.plot([X[i], X[i+1]], [Y[i], Y[i]])
@@ -404,10 +416,11 @@ def interpolate(X, Y, x):
 
 if __name__ == "__main__":
     # print('Entered parse.py')
-    if len(sys.argv) != 4:
-        print('usage: parse.py DIRECTORY SERVICE FAULT')
+    if len(sys.argv) != 5:
+        print('usage: parse.py DIRECTORY SERVICE mem|cpu PARAMETER')
         exit(1)
     dir = sys.argv[1]
     candidate = sys.argv[2]
-    fault = sys.argv[3]
-    main(dir, candidate, fault)
+    kind = sys.argv[3]
+    param = sys.argv[4]
+    main(dir, candidate, kind, param)

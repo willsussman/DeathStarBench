@@ -195,21 +195,21 @@ def home_timeline_service_query_file():
     except FileNotFoundError:
         return "File not found", 404
 
-@app.route('/nginx-thrift-query-file', methods=['GET'])
-def nginx_thrift_query_file():
-    try:
-        with open('nginx_thrift_webhook_data.txt', 'r') as file:
-            return file.read()
-    except FileNotFoundError:
-        return "File not found", 404
+# @app.route('/nginx-thrift-query-file', methods=['GET'])
+# def nginx_thrift_query_file():
+#     try:
+#         with open('nginx_thrift_webhook_data.txt', 'r') as file:
+#             return file.read()
+#     except FileNotFoundError:
+#         return "File not found", 404
 
-@app.route('/media-frontend-query-file', methods=['GET'])
-def media_frontend_query_file():
-    try:
-        with open('media_frontend_webhook_data.txt', 'r') as file:
-            return file.read()
-    except FileNotFoundError:
-        return "File not found", 404
+# @app.route('/media-frontend-query-file', methods=['GET'])
+# def media_frontend_query_file():
+#     try:
+#         with open('media_frontend_webhook_data.txt', 'r') as file:
+#             return file.read()
+#     except FileNotFoundError:
+#         return "File not found", 404
 
 # @app.route('/webhook', methods=['POST'])
 # def webhook():
@@ -397,19 +397,19 @@ def home_timeline_service_webhook():
         file.write(json.dumps(data) + '\n')
     return "Data received", 200
 
-@app.route('/nginx-thrift-webhook', methods=['POST'])
-def nginx_thrift_webhook():
-    data = request.json  # Assuming the incoming data is in JSON format
-    with open('nginx_thrift_webhook_data.txt', 'a') as file:  # 'a' for append mode
-        file.write(json.dumps(data) + '\n')
-    return "Data received", 200
+# @app.route('/nginx-thrift-webhook', methods=['POST'])
+# def nginx_thrift_webhook():
+#     data = request.json  # Assuming the incoming data is in JSON format
+#     with open('nginx_thrift_webhook_data.txt', 'a') as file:  # 'a' for append mode
+#         file.write(json.dumps(data) + '\n')
+#     return "Data received", 200
 
-@app.route('/media-frontend-webhook', methods=['POST'])
-def media_frontend_webhook():
-    data = request.json  # Assuming the incoming data is in JSON format
-    with open('media_frontend_webhook_data.txt', 'a') as file:  # 'a' for append mode
-        file.write(json.dumps(data) + '\n')
-    return "Data received", 200
+# @app.route('/media-frontend-webhook', methods=['POST'])
+# def media_frontend_webhook():
+#     data = request.json  # Assuming the incoming data is in JSON format
+#     with open('media_frontend_webhook_data.txt', 'a') as file:  # 'a' for append mode
+#         file.write(json.dumps(data) + '\n')
+#     return "Data received", 200
 
 
 if __name__ == '__main__':
