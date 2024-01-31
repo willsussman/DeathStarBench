@@ -1,19 +1,161 @@
-# https://promcat.io/
-groups:
-    - name: MongoDB
-      rules:
+groups: # https://raw.githubusercontent.com/samber/awesome-prometheus-alerts/master/dist/rules/mongodb/percona-mongodb-exporter.yml
+
+- name: PerconaMongodbExporter
+
+  rules:
+
+    - alert: MongodbDown
+      expr: 'mongodb_up == 0'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: MongoDB Down (instance {{ $labels.instance }})
+        description: "MongoDB instance is down\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbDown
+      expr: 'mongodb_up != 0'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: NOT MongoDB Down (instance {{ $labels.instance }})
+        description: "NOT MongoDB instance is down\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: MongodbReplicaMemberUnhealthy
+      expr: 'mongodb_rs_members_health == 0'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Mongodb replica member unhealthy (instance {{ $labels.instance }})
+        description: "MongoDB replica member is not healthy\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbReplicaMemberUnhealthy
+      expr: 'mongodb_rs_members_health != 0'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: NOT Mongodb replica member unhealthy (instance {{ $labels.instance }})
+        description: "NOT MongoDB replica member is not healthy\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: MongodbReplicationLag
+      expr: '(mongodb_rs_members_optimeDate{member_state="PRIMARY"} - on (set) group_right mongodb_rs_members_optimeDate{member_state="SECONDARY"}) / 1000 > 10'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: MongoDB replication lag (instance {{ $labels.instance }})
+        description: "Mongodb replication lag is more than 10s\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbReplicationLag
+      expr: '(mongodb_rs_members_optimeDate{member_state="PRIMARY"} - on (set) group_right mongodb_rs_members_optimeDate{member_state="SECONDARY"}) / 1000 <= 10'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: NOT MongoDB replication lag (instance {{ $labels.instance }})
+        description: "NOT Mongodb replication lag is more than 10s\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: MongodbReplicationHeadroom
+      expr: 'sum(avg(mongodb_mongod_replset_oplog_head_timestamp - mongodb_mongod_replset_oplog_tail_timestamp)) - sum(avg(mongodb_rs_members_optimeDate{member_state="PRIMARY"} - on (set) group_right mongodb_rs_members_optimeDate{member_state="SECONDARY"})) <= 0'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: MongoDB replication headroom (instance {{ $labels.instance }})
+        description: "MongoDB replication headroom is <= 0\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbReplicationHeadroom
+      expr: 'sum(avg(mongodb_mongod_replset_oplog_head_timestamp - mongodb_mongod_replset_oplog_tail_timestamp)) - sum(avg(mongodb_rs_members_optimeDate{member_state="PRIMARY"} - on (set) group_right mongodb_rs_members_optimeDate{member_state="SECONDARY"})) > 0'
+      # for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: NOT MongoDB replication headroom (instance {{ $labels.instance }})
+        description: "NOT MongoDB replication headroom is <= 0\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: MongodbNumberCursorsOpen
+      expr: 'mongodb_ss_metrics_cursor_open{csr_type="total"} > 10 * 1000'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: MongoDB number cursors open (instance {{ $labels.instance }})
+        description: "Too many cursors opened by MongoDB for clients (> 10k)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbNumberCursorsOpen
+      expr: 'mongodb_ss_metrics_cursor_open{csr_type="total"} <= 10 * 1000'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: NOT MongoDB number cursors open (instance {{ $labels.instance }})
+        description: "NOT Too many cursors opened by MongoDB for clients (> 10k)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: MongodbCursorsTimeouts
+      expr: 'increase(mongodb_ss_metrics_cursor_timedOut[1m]) > 100'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: MongoDB cursors timeouts (instance {{ $labels.instance }})
+        description: "Too many cursors are timing out\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbCursorsTimeouts
+      expr: 'increase(mongodb_ss_metrics_cursor_timedOut[1m]) <= 100'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: NOT MongoDB cursors timeouts (instance {{ $labels.instance }})
+        description: "NOT Too many cursors are timing out\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: MongodbTooManyConnections
+      expr: 'avg by(instance) (rate(mongodb_ss_connections{conn_type="current"}[1m])) / avg by(instance) (sum (mongodb_ss_connections) by (instance)) * 100 > 80'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: MongoDB too many connections (instance {{ $labels.instance }})
+        description: "Too many connections (> 80%)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbTooManyConnections
+      expr: 'avg by(instance) (rate(mongodb_ss_connections{conn_type="current"}[1m])) / avg by(instance) (sum (mongodb_ss_connections) by (instance)) * 100 <= 80'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: NOT MongoDB too many connections (instance {{ $labels.instance }})
+        description: "NOT Too many connections (> 80%)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: MongodbVirtualMemoryUsage
+      expr: '(sum(mongodb_ss_mem_virtual) BY (instance) / sum(mongodb_ss_mem_resident) BY (instance)) > 3'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: MongoDB virtual memory usage (instance {{ $labels.instance }})
+        description: "High memory usage\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - alert: NOT MongodbVirtualMemoryUsage
+      expr: '(sum(mongodb_ss_mem_virtual) BY (instance) / sum(mongodb_ss_mem_resident) BY (instance)) <= 3'
+      # for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: NOT MongoDB virtual memory usage (instance {{ $labels.instance }})
+        description: "NOT High memory usage\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+# groups: # https://promcat.io/apps/mongodb
+#     - name: MongoDB
+#       rules:
+
         - alert: '[MongoDB] Instance Down'
           expr: |
             mongodb_up != 1
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
             description: Mongo server detected down by instance
-        - alert: '[MongoDB] NOT Instance Down'
+        - alert: 'NOT [MongoDB] Instance Down'
           expr: |
             mongodb_up == 1
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
@@ -22,15 +164,15 @@ groups:
         - alert: '[MongoDB] Uptime less than one hour'
           expr: |
             mongodb_instance_uptime_seconds < 3600
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
             description: Mongo server detected down by instance
-        - alert: '[MongoDB] NOT Uptime less than one hour'
+        - alert: 'NOT [MongoDB] Uptime less than one hour'
           expr: |
             mongodb_instance_uptime_seconds >= 3600
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
@@ -39,15 +181,15 @@ groups:
         - alert: '[MongoDB] Asserts detected'
           expr: |
             rate(mongodb_asserts_total{type=~"regular|user|message"}[5m]) < 3600
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
             description: Mongo server detected down by instance
-        - alert: '[MongoDB] NOT Asserts detected'
+        - alert: 'NOT [MongoDB] Asserts detected'
           expr: |
             rate(mongodb_asserts_total{type=~"regular|user|message"}[5m]) >= 3600
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
@@ -56,15 +198,15 @@ groups:
         - alert: '[MongoDB] High Latency'
           expr: |
             rate(mongodb_mongod_op_latencies_latency_total[5m]) / rate(mongodb_mongod_op_latencies_ops_total[5m]) > 250000
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
             description: High latency in instance
-        - alert: '[MongoDB] NOT High Latency'
+        - alert: 'NOT [MongoDB] High Latency'
           expr: |
             rate(mongodb_mongod_op_latencies_latency_total[5m]) / rate(mongodb_mongod_op_latencies_ops_total[5m]) <= 250000
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
@@ -73,15 +215,15 @@ groups:
         - alert: '[MongoDB] High Ticket Utilization'
           expr: |
             (mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets / mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets)> 0.75
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
             description: Ticket usage over 75% in instance
-        - alert: '[MongoDB] NOT High Ticket Utilization'
+        - alert: 'NOT [MongoDB] High Ticket Utilization'
           expr: |
             (mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets / mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets)<= 0.75
-          # for 10m
+          # for: 10m
           labels:
             severity: critical
           annotations:
@@ -90,15 +232,15 @@ groups:
         - alert: '[MongoDB] Recurrent Cursor Timeout'
           expr: |
             rate(mongodb_mongod_metrics_cursor_timed_out_total[5m]) > 0
-          # for 30m
+          # for: 30m
           labels:
             severity: critical
           annotations:
             description: Recurrent cursors timeout in instance
-        - alert: '[MongoDB] NOT Recurrent Cursor Timeout'
+        - alert: 'NOT [MongoDB] Recurrent Cursor Timeout'
           expr: |
             rate(mongodb_mongod_metrics_cursor_timed_out_total[5m]) <= 0
-          # for 30m
+          # for: 30m
           labels:
             severity: critical
           annotations:
@@ -107,15 +249,15 @@ groups:
         - alert: '[MongoDB] Recurrent Memory Page Faults'
           expr: |
             rate(mongodb_extra_info_page_faults_total[5m]) > 0
-          # for 30m
+          # for: 30m
           labels:
             severity: critical
           annotations:
             description: Recurrent cursors timeout in instance
-        - alert: '[MongoDB] NOT Recurrent Memory Page Faults'
+        - alert: 'NOT [MongoDB] Recurrent Memory Page Faults'
           expr: |
             rate(mongodb_extra_info_page_faults_total[5m]) <= 0
-          # for 30m
+          # for: 30m
           labels:
             severity: critical
           annotations:

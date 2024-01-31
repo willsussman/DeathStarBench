@@ -611,37 +611,37 @@ services:
     #   retries: 3
     #   start_period: 60s
 
-  nginx-thrift-alertmanager:
-    image: prom/alertmanager
-    hostname: nginx-thrift-alertmanager
-    container_name: nginx-thrift-alertmanager
-    restart: always
-    volumes:
-      - ./alertmanager/nginx-thrift-alertmanager.yml:/etc/alertmanager/alertmanager.yml
-    ports:
-      - "9234:9093"
+  # nginx-thrift-alertmanager:
+  #   image: prom/alertmanager
+  #   hostname: nginx-thrift-alertmanager
+  #   container_name: nginx-thrift-alertmanager
+  #   restart: always
+  #   volumes:
+  #     - ./alertmanager/nginx-thrift-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+  #   ports:
+  #     - "9234:9093"
 
-  nginx-thrift-prometheus:
-    image: prom/prometheus
-    hostname: nginx-thrift-prometheus
-    container_name: nginx-thrift-prometheus
-    restart: always
-    ports:
-      - "9115:9090"
-    volumes:
-      - ./prometheus/nginx-thrift:/etc/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+  # nginx-thrift-prometheus:
+  #   image: prom/prometheus
+  #   hostname: nginx-thrift-prometheus
+  #   container_name: nginx-thrift-prometheus
+  #   restart: always
+  #   ports:
+  #     - "9115:9090"
+  #   volumes:
+  #     - ./prometheus/nginx-thrift:/etc/prometheus
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
 
-  nginx-thrift-exporter:
-    image: prom/node-exporter:latest
-    hostname: nginx-thrift-exporter
-    container_name: nginx-thrift-exporter
-    restart: always
-    ports:
-      - '9313:9100'
-    # volumes:
-    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
+  # nginx-thrift-exporter:
+  #   image: prom/node-exporter:latest
+  #   hostname: nginx-thrift-exporter
+  #   container_name: nginx-thrift-exporter
+  #   restart: always
+  #   ports:
+  #     - '9313:9100'
+  #   # volumes:
+  #   #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   nginx-thrift:
     image: yg397/openresty-thrift:xenial
@@ -668,37 +668,37 @@ services:
     #   retries: 3
     #   start_period: 60s
 
-  media-frontend-alertmanager:
-    image: prom/alertmanager
-    hostname: media-frontend-alertmanager
-    container_name: media-frontend-alertmanager
-    restart: always
-    volumes:
-      - ./alertmanager/media-frontend-alertmanager.yml:/etc/alertmanager/alertmanager.yml
-    ports:
-      - "9235:9093"
+  # media-frontend-alertmanager:
+  #   image: prom/alertmanager
+  #   hostname: media-frontend-alertmanager
+  #   container_name: media-frontend-alertmanager
+  #   restart: always
+  #   volumes:
+  #     - ./alertmanager/media-frontend-alertmanager.yml:/etc/alertmanager/alertmanager.yml
+  #   ports:
+  #     - "9235:9093"
 
-  media-frontend-prometheus:
-    image: prom/prometheus
-    hostname: media-frontend-prometheus
-    container_name: media-frontend-prometheus
-    restart: always
-    ports:
-      - "9116:9090"
-    volumes:
-      - ./prometheus/media-frontend:/etc/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+  # media-frontend-prometheus:
+  #   image: prom/prometheus
+  #   hostname: media-frontend-prometheus
+  #   container_name: media-frontend-prometheus
+  #   restart: always
+  #   ports:
+  #     - "9116:9090"
+  #   volumes:
+  #     - ./prometheus/media-frontend:/etc/prometheus
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
 
-  media-frontend-exporter:
-    image: prom/node-exporter:latest
-    hostname: media-frontend-exporter
-    container_name: media-frontend-exporter
-    restart: always
-    ports:
-      - '9312:9100'
-    # volumes:
-    #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
+  # media-frontend-exporter:
+  #   image: prom/node-exporter:latest
+  #   hostname: media-frontend-exporter
+  #   container_name: media-frontend-exporter
+  #   restart: always
+  #   ports:
+  #     - '9312:9100'
+  #   # volumes:
+  #   #   - ./blackbox.yml:/etc/blackbox_exporter/config.yml
 
   media-frontend:
     image: yg397/media-frontend:xenial

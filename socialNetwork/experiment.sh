@@ -235,7 +235,8 @@ do
         curl -s -o "$dirname"/webhook_data/media_frontend_webhook_data.txt http://localhost:5000/media-frontend-query-file
 
         echo "Parsing..."
-        /home/ubuntu/DeathStarBench/socialNetwork/reparse.sh "$dirname" &> "$dirname"/reparse.txt
+        # /home/ubuntu/DeathStarBench/socialNetwork/reparse.sh "$dirname" &> "$dirname"/reparse.txt
+        python /home/ubuntu/DeathStarBench/socialNetwork/parse.py "$dirname" $candidate $cpu &> "$dirname"/combos/$candidate/$cpu/parse.txt
     done
     # cd ..
 done
@@ -270,6 +271,8 @@ done
 # curl -s -o "$dirname"/webhook_data/home_timeline_service_webhook_data.txt http://localhost:5000/home-timeline-service-query-file
 # curl -s -o "$dirname"/webhook_data/nginx_thrift_webhook_data.txt http://localhost:5000/nginx-thrift-query-file
 # curl -s -o "$dirname"/webhook_data/media_frontend_webhook_data.txt http://localhost:5000/media-frontend-query-file
+echo "Summarizing..."
+python /home/ubuntu/DeathStarBench/socialNetwork/summary.py "$dirname" &> "$dirname"/summary.txt
 
 echo "Saving logs..."
 sudo docker ps -a &> "$dirname"/final_ps.txt
@@ -281,7 +284,7 @@ done
 
 # echo "Parsing..."
 # /home/ubuntu/DeathStarBench/socialNetwork/reparse.sh "$dirname" &> "$dirname"/reparse.txt
-echo "Summarizing..."
-python /home/ubuntu/DeathStarBench/socialNetwork/summary.py "$dirname" &> "$dirname"/summary.txt
+# echo "Summarizing..."
+# python /home/ubuntu/DeathStarBench/socialNetwork/summary.py "$dirname" &> "$dirname"/summary.txt
 
 echo "Done!"
